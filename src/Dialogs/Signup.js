@@ -1,9 +1,11 @@
-import { Box, Button, Dialog, DialogContent, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, IconButton, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { dialogActions } from '../Store/dialogSlice';
+import HelpIcon from '@mui/icons-material/Help';
+import PopoverRole from './PopoverRole';
 
 const initVals = {
   fullName: "",
@@ -39,6 +41,11 @@ const Signup = () => {
   const { status } = useSelector(state => state.dialog.signup)
   const dispatch = useDispatch()
 
+  const [helpRoleAnchor, setHelpRoleAnchor] = useState(null);
+
+  const handleHelpRole = (event) => setHelpRoleAnchor(event.currentTarget);
+
+
   const onSubmit = async (inputData) => {
     alert("Signup Success")
     console.log(inputData)
@@ -60,7 +67,7 @@ const Signup = () => {
   })
 
   return (
-    <Dialog 
+    <Dialog
       open={status} onClose={() => { formik.resetForm(); dispatch(dialogActions.hide("signup")) }} sx={style_dialog}>
       <Typography fontWeight={700} fontSize={34} sx={{ mt: 3, mb: 1 }} textAlign="center">Register</Typography>
       <form onSubmit={formik.handleSubmit}>
@@ -70,7 +77,18 @@ const Signup = () => {
           {renderData.map((data, i) => {
             return (
               <Box key={i} mb={1} width={"100%"} >
-                <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >{data.name}</Typography>
+                {data.name === "Password" ?
+                  <Box display="flex">
+                   <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >{data.name}</Typography>
+                    <IconButton sx={{ p: 0, m: 0, ml: 0.5, mb: 0.5 }} onClick={handleHelpRole}>
+                      <HelpIcon fontSize='small' sx={{ color: "primary.main" }} />
+                    </IconButton>
+                    <PopoverRole anchor={helpRoleAnchor} setAnchor={setHelpRoleAnchor} text={
+                      "Required: One capital letter (A-Z) | One small letter (a-z) | One number (0-9) | 8 in length "
+                    } />
+                  </Box> : <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >{data.name}</Typography>
+                }
+                
                 <TextField
                   variant="outlined"
                   size='small'
@@ -104,7 +122,7 @@ const Signup = () => {
 export default Signup
 
 const style_dialog = {
-  "& .MuiPaper-root": { px: 2}
+  "& .MuiPaper-root": { px: 2 }
 }
 
 const style_txtbox = {
