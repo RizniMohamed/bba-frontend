@@ -37,17 +37,16 @@ const SidePanel = () => {
     return {
       [`& .${element}-root:hover`]: {
         backgroundColor: "primary.main",
-        color: "white"
+        color: "white",
       },
       [`& .${element}-root`]: {
         borderRadius: element === "MuiSvgIcon" ? 0.3 : 0.2,
-        px: 1,
+        p: 0.5
       },
     }
   }
 
   const selectedStyle = (name) => {
-    console.log(name, current);
     if (current === name)
       if (drawerState)
         return style_selected_open
@@ -113,20 +112,17 @@ const style_selected_open = {
   '& .MuiListItemButton-root': {
     borderRadius: 0.2,
     backgroundColor: "primary.main",
-    px: 1,
     color: "white"
   },
   '& .MuiSvgIcon-root': {
     backgroundColor: "primary.main",
     borderRadius: 0.3,
-    px: 1,
     color: "white"
   },
 }
 const style_selected_close = {
   '& .MuiSvgIcon-root': {
-    backgroundColor: "primary.main",
-    px: 1,
+    backgroundColor: "#FF8B03 !important",
     color: "white"
   },
 }

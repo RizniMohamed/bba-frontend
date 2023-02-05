@@ -51,7 +51,10 @@ const theme = {
                 duration: theme.transitions.duration.enteringScreen,
             }),
             overflowX: 'hidden',
-            width: 0,
+            width: `calc(${theme.spacing(8)} + 1px)`,
+            [theme.breakpoints.up('md')]: {
+                width: `calc(${theme.spacing(7.5)} + 1px)`,
+            },
            
         }),
     },

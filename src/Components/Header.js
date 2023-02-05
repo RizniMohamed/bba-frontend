@@ -1,11 +1,11 @@
 import { Menu, AccountCircle } from '@mui/icons-material';
-import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Avatar, IconButton, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { drawerActions } from '../Store/drawerSlice';
-
+import logo from '../LocalData/image/logo.png';
 const Header = () => {
 
   const drawerState = useSelector(state => state.leftDrawer.status)
@@ -40,6 +40,7 @@ const Header = () => {
 
           <Box mx={2} display="flex" alignItems="center" flexGrow={1}>
             {/* <Logo /> */}
+            <Avatar alt="Remy Sharp" src={logo} variant="rounded" sx={{ width: 40, height: 40, borderRadius: "100%", p: 1 }} />
             <Typography fontSize={20} color="white" fontFamily="serif" fontWeight={600}>Bumble Bee</Typography>
           </Box>
 
