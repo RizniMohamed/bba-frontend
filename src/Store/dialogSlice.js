@@ -11,7 +11,7 @@ const initialState = {
         data: "",
         onSubmit: undefined
     },
-    tag: {
+    OTP: {
         status: false,
         data: "",
         onSubmit: undefined
