@@ -122,7 +122,7 @@ const Shop = () => {
           // onChange={(e, value) => formik.values[data.value] = value.value}
           getOptionLabel={option => option.name}
           PaperComponent={params => <Paper {...params} sx={{ ...paperStyle }} />}
-          sx={{ minWidth: 500, width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important" } }}
+          sx={{ minWidth: 300, width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important" } }}
           renderInput={(params) => (
             < TextField
               {...params}
@@ -144,10 +144,10 @@ const Shop = () => {
       </Box>
 
 
-      <Box display="flex" mt={2}>
+      <Box display="flex" flexDirection={"column"} mt={2}>
 
         {/* Fitler */}
-        <Box height={510} bgcolor="#3B3B3B" borderRadius={5} display="flex" flexDirection="column" p={2} alignItems="center">
+        <Box width={300} alignSelf="center" bgcolor="#3B3B3B" borderRadius={5} display="flex" flexDirection="column" p={2} alignItems="center">
           <Box display="flex" >
             <Typography mb={2} fontSize={16} fontWeight={600} color="primary.main"> Filters  </Typography>
             <FilterAlt fontSize='small' sx={{ color: "primary.main" }} />
@@ -186,9 +186,9 @@ const Shop = () => {
         </Box>
 
         {/*  Products */}
-        <Box width="80%" height={510} display="flex" alignItems="center" flexDirection="column" >
+        <Box height={460} display="flex" alignItems="center" flexDirection="column" >
 
-          <Box display="flex" flexWrap="wrap" justifyContent="flex-start" ml={5} overflow="auto" mt={1}>
+          <Box display="flex" flexWrap="wrap" justifyContent="flex-start" ml={2} overflow="auto" mt={1}>
             {ProductList.map((c, i) => {
               return <ProductCard key={i} data={c} />
             })}

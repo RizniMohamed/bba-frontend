@@ -21,7 +21,7 @@ const Header = () => {
     const pathArrays = location.pathname.split("/").filter(x => x)
     const selectedStyle = { color: "primary.main" }
     const unSelectedStyle = { color: "white" }
-    setProfileStyle(pathArrays[1].toLowerCase() === "profile" ? selectedStyle : unSelectedStyle)
+    setProfileStyle(pathArrays[1]?.toLowerCase() === "profile" ? selectedStyle : unSelectedStyle)
   }, [location])
 
 

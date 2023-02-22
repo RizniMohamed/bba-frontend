@@ -5,24 +5,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from 'react-router-dom';
 import Header from "../Components/Header";
 import SidePanel from "../Components/SidePanel";
-import Login from '../page/Login';
-import NotFound from "../page/NotFound";
+
+// Mobile
+import MLogin from '../page/Mobile/Login';
+import MShop from '../page/Mobile/Shop'
+
+// Web
 import WDashboard from '../page/Web/Dashboard';
 import WCustomer from '../page/Web/Customer';
 import WInventory from '../page/Web/Inventory';
 import WProfile from '../page/Web/Profile';
 import WLoan from '../page/Web/Loan';
-import Shop from '../page/Web/Shop'
+import WShop from '../page/Web/Shop'
+import WLogin from '../page/Web/Login';
+
+import Index from '../page/Index'
+import NotFound from "../page/NotFound";
 
 import { drawerActions } from "../Store/drawerSlice";
 
-function Protected({ isSignedIn, children }) {
 
+const Protected = ({ isSignedIn }) => {
   const dispatch = useDispatch()
-
-  if (!isSignedIn) return <Navigate to="/" replace />
-
-  return children ? children : (
+  if (!isSignedIn) return <Navigate to="/" replace /> 
+  return (
     <Box p={1} >
       <Header />
       <Toolbar />
@@ -36,23 +42,29 @@ function Protected({ isSignedIn, children }) {
   )
 }
 
-
 function Views() {
   const authSate = useSelector(state => state.auth.status)
-
 
   return (
     <Routes>
 
-      <Route index element={<Shop />} />
-      <Route path="login" element={<Login />} />
+      <Route index element={<Index />} />
 
-      <Route path="w" element={< Protected isSignedIn={true} />}>
-        <Route path="dashboard" element={<WDashboard />} />
-        <Route path="customer" element={<WCustomer />} />
-        <Route path="profile" element={<WProfile />} />
-        <Route path="loan" element={<WLoan />} />
-        <Route path="inventory" element={<WInventory />} />
+      <Route path="w">
+        <Route index element={<WShop />} />
+        <Route path="login" element={<WLogin />} />
+        <Route element={<Protected isSignedIn={true} />}>
+          <Route path="dashboard" element={<WDashboard />} />
+          <Route path="customer" element={<WCustomer />} />
+          <Route path="profile" element={<WProfile />} />
+          <Route path="loan" element={<WLoan />} />
+          <Route path="inventory" element={<WInventory />} />
+        </Route>
+      </Route>
+
+      <Route path="m">
+        <Route index element={<MShop />} />
+        <Route path="login" element={<MLogin />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
