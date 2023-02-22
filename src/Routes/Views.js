@@ -12,6 +12,8 @@ import WCustomer from '../page/Web/Customer';
 import WInventory from '../page/Web/Inventory';
 import WProfile from '../page/Web/Profile';
 import WLoan from '../page/Web/Loan';
+import Shop from '../page/Web/Shop'
+
 import { drawerActions } from "../Store/drawerSlice";
 
 function Protected({ isSignedIn, children }) {
@@ -41,7 +43,10 @@ function Views() {
 
   return (
     <Routes>
-      <Route index element={<Login />} />
+
+      <Route index element={<Shop />} />
+      <Route path="login" element={<Login />} />
+
       <Route path="w" element={< Protected isSignedIn={true} />}>
         <Route path="dashboard" element={<WDashboard />} />
         <Route path="customer" element={<WCustomer />} />

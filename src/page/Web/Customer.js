@@ -1,11 +1,58 @@
-import { Autocomplete, InputAdornment, Paper, TextField } from '@mui/material'
+import { Autocomplete, Paper, TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import CustomerCard from '../../Components/CustomerCard'
 import SearchIcon from '@mui/icons-material/Search';
 
 const Customer = () => {
-  const [list, setList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
+
+  const data = [
+    {
+      name: "CID",
+      value: "st20267816",
+    },
+    {
+      name: "Name",
+      value: "Rizni",
+    },
+    {
+      name: "Shop Name",
+      value: "B8 Bee",
+    },
+    {
+      name: "DOB",
+      value: "2022.02.02",
+    },
+    {
+      name: "Contact",
+      value: "775824807",
+    },
+  ]
+
+  const data2 = [
+    {
+      name: "CID",
+      value: "st123123",
+    },
+    {
+      name: "Name",
+      value: "Rizni",
+    },
+    {
+      name: "Shop Name",
+      value: "B8 Bee",
+    },
+    {
+      name: "DOB",
+      value: "2022.02.02",
+    },
+    {
+      name: "Contact",
+      value: "775824807",
+    },
+  ]
+
+  const [list, setList] = useState([data, data2, data, data, data, data, data, data, data, data, data, data, data, data, data, data, data, data, data, data])
 
   return (
     <Box>
@@ -15,13 +62,13 @@ const Customer = () => {
           options={list}
           freeSolo
           // onChange={(e, value) => formik.values[data.value] = value.value}
-          getOptionLabel={option => option}
+          getOptionLabel={option => option[0].value}
           PaperComponent={params => <Paper {...params} sx={{ ...paperStyle }} />}
-          sx={{ width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important" } }}
+          sx={{ minWidth: 240, width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important" } }}
           renderInput={(params) => (
             < TextField
               {...params}
-              InputProps={{ startAdornment: <SearchIcon sx={{color:"#ababab"}} /> }}
+              InputProps={{ ...params.InputProps, startAdornment: <SearchIcon sx={{ color: "#ababab" }} /> }}
               name="search"
               placeholder="Search"
               // error={formik.touched[data.value] && Boolean(formik.errors[data.value])}
@@ -39,7 +86,7 @@ const Customer = () => {
       </Box>
       <Box display="flex" flexWrap="wrap" justifyContent="center">
         {list.map((c, i) => {
-          return <CustomerCard key={i} />
+          return <CustomerCard key={i} data={c} />
         })}
       </Box>
     </Box>

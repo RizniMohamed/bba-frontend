@@ -15,6 +15,6 @@ export const MuiCssBaseline = {
             transitionDelay: '9999s',
             transitionProperty: 'background-color, color',
         },
-
+       
     }
 }
