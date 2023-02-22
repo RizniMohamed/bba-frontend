@@ -1,9 +1,12 @@
-import { Autocomplete, Box, Paper, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, IconButton, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { FilterAlt, Search } from '@mui/icons-material';
+import { FilterAlt, Search, Login } from '@mui/icons-material';
 import ProductCard from "../../Components/ProductCard"
+import { useNavigate } from 'react-router-dom';
 
 const Shop = () => {
+
+  const navigate = useNavigate()
 
   const categoryList = [
     { name: "Cat a", value: 'a' },
@@ -141,6 +144,14 @@ const Shop = () => {
             />
           )}
         />
+
+        <Box display="flex" justifyContent="end" mr={5} sx={{ transform: "translate(360px,0)" }}>
+          <Button variant='contained' onClick={ () => navigate("login") }  >
+            <Typography fontSize={15} fontWeight={600} color="white"> Login  </Typography>
+            <Login fontSize='medium' sx={{ color: "white" }} />
+          </Button>
+        </Box>
+
       </Box>
 
 
@@ -152,7 +163,7 @@ const Shop = () => {
             <Typography mb={2} fontSize={16} fontWeight={600} color="primary.main"> Filters  </Typography>
             <FilterAlt fontSize='small' sx={{ color: "primary.main" }} />
           </Box>
-          {filterRender.map((e,i) => {
+          {filterRender.map((e, i) => {
             return (
               <Autocomplete
                 size='small'

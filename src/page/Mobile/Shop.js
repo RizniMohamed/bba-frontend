@@ -1,9 +1,12 @@
-import { Autocomplete, Box, Paper, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, IconButton, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { FilterAlt, Search } from '@mui/icons-material';
+import { FilterAlt, Login, Search } from '@mui/icons-material';
 import ProductCard from "../../Components/ProductCard"
+import { useNavigate } from 'react-router-dom';
 
 const Shop = () => {
+
+  const navigate = useNavigate()
 
   const categoryList = [
     { name: "Cat a", value: 'a' },
@@ -122,7 +125,7 @@ const Shop = () => {
           // onChange={(e, value) => formik.values[data.value] = value.value}
           getOptionLabel={option => option.name}
           PaperComponent={params => <Paper {...params} sx={{ ...paperStyle }} />}
-          sx={{ minWidth: 300, width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important" } }}
+          sx={{ minWidth: 260, width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important" } }}
           renderInput={(params) => (
             < TextField
               {...params}
@@ -141,6 +144,9 @@ const Shop = () => {
             />
           )}
         />
+        <IconButton size='small' sx={{ bgcolor: "primary.main", ml: 1 }} onClick={() => navigate("login")}    >
+          <Login fontSize='medium' sx={{ color: "white" }} />
+        </IconButton>
       </Box>
 
 
@@ -152,7 +158,7 @@ const Shop = () => {
             <Typography mb={2} fontSize={16} fontWeight={600} color="primary.main"> Filters  </Typography>
             <FilterAlt fontSize='small' sx={{ color: "primary.main" }} />
           </Box>
-          {filterRender.map((e,i) => {
+          {filterRender.map((e, i) => {
             return (
               <Autocomplete
                 size='small'
