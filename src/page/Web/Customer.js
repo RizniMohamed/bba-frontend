@@ -1,7 +1,7 @@
 import { Autocomplete, Paper, TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
-import CustomerCard from '../../Components/CustomerCard'
+import SellerCard from '../../Components/SellerCard'
 import SearchIcon from '@mui/icons-material/Search';
 
 const Customer = () => {
@@ -86,7 +86,7 @@ const Customer = () => {
       </Box>
       <Box display="flex" flexWrap="wrap" justifyContent="center">
         {list.map((c, i) => {
-          return <CustomerCard key={i} data={c} />
+          return <SellerCard key={i} data={c} />
         })}
       </Box>
     </Box>

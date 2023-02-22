@@ -8,7 +8,8 @@ import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import WDrawerData from "../LocalData/Drawer/WDrawerData";
+import WSellerDrawerData from "../LocalData/Drawer/WSellerDrawerData";
+import WAdminDrawerData from "../LocalData/Drawer/WAdminDrawerData";
 import { authActions } from '../Store/authSlice';
 
 const SidePanel = () => {
@@ -18,9 +19,11 @@ const SidePanel = () => {
   const location = useLocation()
   const drawerState = useSelector(state => state.leftDrawer.status)
 
+  const authROle = useSelector(state => state.auth.role)
+
   useEffect(() => {
     const pathArrays = location.pathname.split("/").filter(x => x)
-    pathArrays[0] === "w" ? setData(WDrawerData) : setData(WDrawerData)
+    if (pathArrays[0] === "w") authROle === "admin" ? setData(WAdminDrawerData) : setData(WSellerDrawerData)
     setCurrent(pathArrays[1])
   }, [location])
 

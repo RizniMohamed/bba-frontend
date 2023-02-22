@@ -12,7 +12,6 @@ import * as yup from 'yup';
 
 const Login = () => {
 
-  const [msg, setMsg] = useState({ variant: "", msg: "" })
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -108,7 +107,6 @@ const Login = () => {
                 )
               })}
 
-              <Typography fontWeight={700} color={msg.variant} fontSize={14} textAlign="center" sx={{ mt: 1 }} >{msg.msg}</Typography>
               <Button
                 variant='contained'
                 type="submit"

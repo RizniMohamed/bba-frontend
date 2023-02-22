@@ -1,9 +1,12 @@
 import { People, Inventory, Paid } from '@mui/icons-material';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../LocalData/image/logo.png';
 
-const CustomerCard = ({data}) => {
+const SellerCard = ({data}) => {
+    const navigate = useNavigate()
+
     return (
         <Box minWidth={230}  bgcolor="#2E2E2E" m={1} borderRadius={5}>
             <Box display="flex" justifyContent="center" p={2}>
@@ -19,9 +22,9 @@ const CustomerCard = ({data}) => {
                         </Box>
                     })}
                     <Box display="flex" justifyContent="center" mt={0.5}>
-                        <IconButton><Paid fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
-                        <IconButton><Inventory fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
-                        <IconButton><People fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
+                        <IconButton onClick={() => navigate("loan")}><Paid fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
+                        <IconButton onClick={() => navigate("inventory")}><Inventory fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
+                        <IconButton onClick={() => navigate("profile")}><People fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
                     </Box>
                 </Box>
             </Box>
@@ -29,4 +32,4 @@ const CustomerCard = ({data}) => {
     )
 }
 
-export default CustomerCard
+export default SellerCard

@@ -4,6 +4,7 @@ const initialState = {
     status: false,
     username: undefined,
     userID: undefined,
+    role : "admin"
 }
 
 const authSlice = createSlice({
@@ -13,11 +14,13 @@ const authSlice = createSlice({
         login: (state, payload) => {
             state.status = true
             state.username = payload.payload?.username
+            state.role = payload.payload?.role
             state.userID = payload.payload?.userID
         },
         logout: (state, payload) => {
             state.status = false
             state.username = undefined
+            state.role = undefined
             state.userID = undefined
         },
     }

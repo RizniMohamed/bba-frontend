@@ -27,7 +27,7 @@ import { drawerActions } from "../Store/drawerSlice";
 
 const Protected = ({ isSignedIn }) => {
   const dispatch = useDispatch()
-  if (!isSignedIn) return <Navigate to="/" replace /> 
+  if (!isSignedIn) return <Navigate to="/" replace />
   return (
     <Box p={1} >
       <Header />
@@ -55,10 +55,13 @@ function Views() {
         <Route path="login" element={<WLogin />} />
         <Route element={<Protected isSignedIn={true} />}>
           <Route path="dashboard" element={<WDashboard />} />
-          <Route path="customer" element={<WCustomer />} />
+          <Route path="customer">
+            <Route index element={<WCustomer />} />
+            <Route path="profile" element={<WProfile />} />
+            <Route path="loan" element={<WLoan />} />
+            <Route path="inventory" element={<WInventory />} />
+          </Route>
           <Route path="profile" element={<WProfile />} />
-          <Route path="loan" element={<WLoan />} />
-          <Route path="inventory" element={<WInventory />} />
         </Route>
       </Route>
 
