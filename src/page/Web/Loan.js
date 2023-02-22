@@ -42,14 +42,14 @@ const Loan = () => {
   ]
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 130, headerAlign: "center", align: 'center' },
-    { field: 'name', headerName: 'Loan name', width: 130, headerAlign: "center", align: 'center' },
-    { field: 'startPrice', headerName: 'Start Price', width: 130, headerAlign: "center", align: 'center' },
-    { field: 'endPrice', headerName: 'End Price', width: 130, headerAlign: "center", align: 'center' },
-    { field: 'interest', headerName: 'interest (%)', width: 130, headerAlign: "center", align: 'center' },
-    { field: 'installment', headerName: 'installment steps', width: 130, headerAlign: "center", align: 'center' },
+    { field: 'id', headerName: 'ID', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'name', headerName: 'Loan name', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'startPrice', headerName: 'Start Price LKR', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'endPrice', headerName: 'End Price LKR', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'interest', headerName: 'interest (%)', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'installment', headerName: 'installment Steps', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     {
-      field: 'edit', headerName: 'Edit', width: 130, headerAlign: "center", align: 'center',
+      field: 'edit', headerName: 'Edit', flex: 1, width: 130, headerAlign: "center", align: 'center',
       renderCell: (params) => (
         <IconButton size='small' sx={{ color: "#FF8B03", bgcolor: "#3B3B3B !important" }}>
           <Edit fontSize='small' sx={{ color: "#FF8B03 !important" }} />
@@ -57,7 +57,7 @@ const Loan = () => {
       )
     },
     {
-      field: 'delete', headerName: 'Delete', width: 130, headerAlign: "center", align: 'center',
+      field: 'delete', headerName: 'Delete', flex: 1, width: 130, headerAlign: "center", align: 'center',
       renderCell: (params) => (
         <IconButton size='small' sx={{ color: "red", bgcolor: "#3B3B3B !important" }}>
           <Delete fontSize='small' sx={{ color: "red !important" }} />
