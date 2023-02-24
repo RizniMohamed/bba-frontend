@@ -6,6 +6,11 @@ const initialState = {
         data: "",
         onSubmit: undefined
     },
+    loan: {
+        status: false,
+        data: "",
+        onSubmit: undefined
+    },
     signup: {
         status: false,
         data: "",

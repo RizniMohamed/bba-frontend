@@ -18,12 +18,18 @@ const Delete = () => {
   }
 
   return (
-    <Dialog open={status} onClose={() => { }}>
+    <Dialog open={status} onClose={() => { }}
+      PaperProps={{
+        sx: {
+          width: 500,
+          minHeight:200
+        }
+      }}>
       <DialogTitle fontWeight={700} fontSize={22}> Delete Confirmation </DialogTitle>
       <DialogContent>
         <DialogContentText color="text.main" fontSize={16}>{data}</DialogContentText>
       </DialogContent>
-      <DialogActions sx={{pb:2, pr:2}}>
+      <DialogActions sx={{ pb: 2, pr: 2 }}>
         <Button
           variant='contained'
           size="small"
@@ -35,7 +41,7 @@ const Delete = () => {
           variant='contained'
           size="small"
           onClick={e => handleOnClick(e.currentTarget)}
-          sx={{ bgcolor:"secondary.main", "&:hover": { bgcolor: "red !important" } }}>
+          sx={{ bgcolor: "secondary.main", "&:hover": { bgcolor: "red !important" } }}>
           Delete
         </Button>
       </DialogActions>

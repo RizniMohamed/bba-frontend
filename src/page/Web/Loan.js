@@ -3,8 +3,13 @@ import React from 'react'
 import BreadCrumbs from '../../Components/BreadCrumbs'
 import { DataGrid } from '@mui/x-data-grid';
 import { Add, Delete, Edit } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { dialogActions } from '../../Store/dialogSlice';
+import { messageActions } from '../../Store/messageSlice';
 
 const Loan = () => {
+
+  const dispatch = useDispatch()
 
   const loanDetails = [
     {
@@ -51,7 +56,7 @@ const Loan = () => {
     {
       field: 'edit', headerName: 'Edit', flex: 1, width: 130, headerAlign: "center", align: 'center',
       renderCell: (params) => (
-        <IconButton size='small' sx={{ color: "#FF8B03", bgcolor: "#3B3B3B !important" }}>
+        <IconButton onClick={() => handleEdit(params.row)} size='small' sx={{ color: "#FF8B03", bgcolor: "#3B3B3B !important" }}>
           <Edit fontSize='small' sx={{ color: "#FF8B03 !important" }} />
         </IconButton>
       )
@@ -59,20 +64,52 @@ const Loan = () => {
     {
       field: 'delete', headerName: 'Delete', flex: 1, width: 130, headerAlign: "center", align: 'center',
       renderCell: (params) => (
-        <IconButton size='small' sx={{ color: "red", bgcolor: "#3B3B3B !important" }}>
+        <IconButton onClick={() => handleDelete(params.row)} size='small' sx={{ color: "red", bgcolor: "#3B3B3B !important" }}>
           <Delete fontSize='small' sx={{ color: "red !important" }} />
         </IconButton>
       )
     },
   ];
 
+  const handleDelete = row => {
+    dispatch(dialogActions.show([
+      "delete",
+      (formData) => {
+        alert("Deleted " + row.id)
+      },
+      "Are you sure do you want to delete this loan scheme? All purchaes assoicated with this loan will also deleted"
+    ]))
+    console.log(row);
+  }
+
+  const handleEdit = row => {
+    dispatch(dialogActions.show([
+      "loan",
+      (formData) => {
+        alert("Updated " + row.id)
+      },
+      row
+    ]))
+    console.log(row);
+  }
+
+
+  const handleAdd = () => {
+    dispatch(dialogActions.show([
+      "loan",
+      () => {
+        dispatch(messageActions.show(['Loan created successfully']))
+      },
+      "create"
+    ]))
+  }
 
   return (
     <Box width="100%" >
       <BreadCrumbs />
 
       <Box display="flex" justifyContent="end" mr={5}>
-        <Button size='small' variant='contained'   >
+        <Button size='small' variant='contained' onClick={handleAdd}   >
           <Typography fontSize={15} fontWeight={600} color="white"> Add  </Typography>
           <Add fontSize='small' sx={{ color: "white" }} />
         </Button>
