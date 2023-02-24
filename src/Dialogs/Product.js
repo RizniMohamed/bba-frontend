@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { dialogActions } from '../Store/dialogSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { Avatar, Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Input, TextField } from '@mui/material'
 import { useFormik } from 'formik'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
-import { Box, Button, TextField, Typography, Dialog, DialogContent, DialogTitle, Avatar, Input, IconButton } from '@mui/material'
-import { messageActions } from "../Store/messageSlice"
+import defaultProduct from '../LocalData/image/default_product.png'
+import { dialogActions } from '../Store/dialogSlice'
 // import { sendMail } from '../../services/mail'
 // import { getUser_FP } from '../../services/user'
 
@@ -12,10 +12,11 @@ const Product = () => {
     const dispatch = useDispatch()
     const { status, data, onSubmit } = useSelector(state => state.dialog.product)
 
-    const [image, setImage] = useState(undefined)
+    const [image, setImage] = useState(defaultProduct)
 
     const handleAvatarChange = (e) => {
         formik.values.image = e.target.files[0]
+        formik.errors.image = undefined
         setImage(URL.createObjectURL(formik.values.image))
     }
     const initVals = {
@@ -49,14 +50,13 @@ const Product = () => {
         formik.values.price = data?.price
         formik.values.quantity = data?.quantity
         formik.values.image = data?.image
-        setImage(data?.image)
+        setImage(data?.image || defaultProduct)
     }, [data])
-
 
     return (
         <Dialog open={status} onClose={() => {
             formik.resetForm()
-            setImage(undefined)
+            setImage(defaultProduct)
             dispatch(dialogActions.hide("product"))
         }}  >
             <DialogTitle fontWeight={700} fontSize={34} textAlign="center">Product</DialogTitle>
