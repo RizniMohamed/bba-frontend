@@ -3,42 +3,39 @@ import { dialogActions } from '../Store/dialogSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { Box, Button, TextField, Typography, Dialog, DialogContent, DialogTitle } from '@mui/material'
+import { Box, Button, TextField, Typography, Dialog, DialogContent, DialogTitle, Avatar, Input, IconButton } from '@mui/material'
 import { messageActions } from "../Store/messageSlice"
 // import { sendMail } from '../../services/mail'
 // import { getUser_FP } from '../../services/user'
 
-const Loan = () => {
+const Product = () => {
     const dispatch = useDispatch()
-    const { status, data, onSubmit } = useSelector(state => state.dialog.loan)
+    const { status, data, onSubmit } = useSelector(state => state.dialog.product)
 
-    const initVals = {
-        name: undefined,
-        startPrice: undefined,
-        endPrice: undefined,
-        interest: undefined,
-        installmentSteps: undefined
+    const [image, setImage] = useState(undefined)
+
+    const handleAvatarChange = (e) => {
+        formik.values.image = e.target.files[0]
+        setImage(URL.createObjectURL(formik.values.image))
     }
-
-
-
+    const initVals = {
+        image: undefined,
+        name: undefined,
+        price: undefined,
+        quantity: undefined,
+    }
 
     const Schema = yup.object().shape({
         name: yup.string().required("Required*"),
-        startPrice: yup.number().min(0).required("Required*"),
-        endPrice: yup.number().min(0).test({
-            test: (value, context) => value > parseInt(context.parent.startPrice),
-        }).required("Required*"),
-        interest: yup.number().min(0).required("Required*"),
-        installmentSteps: yup.number().min(3).required("Required*"),
+        price: yup.number().min(0).required("Required*"),
+        quantity: yup.number().min(0).required("Required*"),
+        image: yup.mixed().required("Required*")
     })
 
     const renderData = [
-        { name: "name", placeholder: "Loan Name", defaultValue: data?.name, },
-        { name: "startPrice", placeholder: "Start Price LKR", defaultValue: data?.startPrice, options: { type: "number", } },
-        { name: "endPrice", placeholder: "End Price LKR", defaultValue: data?.endPrice, options: { type: "number", } },
-        { name: "interest", placeholder: "Interest (%)", defaultValue: data?.interest, options: { type: "number", } },
-        { name: "installmentSteps", placeholder: "Installment Steps", defaultValue: data?.installment, options: { type: "number", } },
+        { name: "name", placeholder: "product Name", defaultValue: data?.name, },
+        { name: "price", placeholder: "Price LKR", defaultValue: data?.price, options: { type: "number", } },
+        { name: "quantity", placeholder: "Quantity", defaultValue: data?.quantity, options: { type: "number", } },
     ]
 
     const formik = useFormik({
@@ -49,22 +46,43 @@ const Loan = () => {
 
     useEffect(() => {
         formik.values.name = data?.name
-        formik.values.startPrice = data?.startPrice
-        formik.values.endPrice = data?.endPrice
-        formik.values.interest = data?.interest
-        formik.values.installmentSteps = data?.installment
+        formik.values.price = data?.price
+        formik.values.quantity = data?.quantity
+        formik.values.image = data?.image
+        setImage(data?.image)
     }, [data])
 
 
     return (
         <Dialog open={status} onClose={() => {
             formik.resetForm()
-            dispatch(dialogActions.hide("loan"))
+            setImage(undefined)
+            dispatch(dialogActions.hide("product"))
         }}  >
-            <DialogTitle fontWeight={700} fontSize={34} textAlign="center">Loan</DialogTitle>
+            <DialogTitle fontWeight={700} fontSize={34} textAlign="center">Product</DialogTitle>
 
             <DialogContent sx={{ display: "flex", flexDirection: "column", alignSelf: "center", mx: 2, my: 0, py: 0, width: 300 }}>
                 <form onSubmit={formik.handleSubmit}>
+
+                    <Box display="flex" justifyContent="center" mb={2}>
+                        <label htmlFor="icon-button-file">
+                            <Input
+                                accept="image/*"
+                                id="icon-button-file"
+                                type="file"
+                                name='image'
+                                sx={{ display: 'none' }}
+                                onChange={handleAvatarChange}
+                            />
+                            <IconButton color="primary" aria-label="upload picture" component="span"
+                                sx={{
+                                    border: formik.touched.image && Boolean(formik.errors.image) ?  "2px solid red": "",
+                                    borderRadius: 0.5,
+                                }} >
+                                <Avatar variant='square' src={image} sx={{ height: 125, width: 125, borderRadius: 0.5, }} />
+                            </IconButton>
+                        </label>
+                    </Box>
 
                     {renderData.map((data, i) => {
                         return (
@@ -103,7 +121,7 @@ const Loan = () => {
     )
 }
 
-export default Loan
+export default Product
 
 const style_txtbox = {
     width: "100%",

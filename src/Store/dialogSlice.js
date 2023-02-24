@@ -11,6 +11,11 @@ const initialState = {
         data: "",
         onSubmit: undefined
     },
+    product: {
+        status: false,
+        data: "",
+        onSubmit: undefined
+    },
     signup: {
         status: false,
         data: "",
