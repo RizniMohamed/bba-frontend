@@ -23,7 +23,7 @@ const BreadCrumbs = () => {
                         fontSize={14}
                         textTransform="capitalize"
                         sx={{ cursor: "default", color: "primary.main" }} >
-                        {path}
+                        {path.replace("%20", " ")}
                     </Typography>
                 ) : (
                     <Link key={i} to={location.pathname.split(path, -1)[0] + path} >
@@ -33,7 +33,7 @@ const BreadCrumbs = () => {
                             fontSize={14}
                             textTransform="capitalize"
                             sx={hoverStyle} >
-                            {path}
+                            {path.replace("%20", " ")}
                         </Typography>
                     </Link>
                 )

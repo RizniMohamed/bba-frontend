@@ -8,8 +8,8 @@ const data = [
     icon: <Dashboard />
   },
   {
-    name: "Customer",
-    path: "/w/customer",
+    name: "Seller",
+    path: "/w/seller",
     icon: <Badge />
   },
   {

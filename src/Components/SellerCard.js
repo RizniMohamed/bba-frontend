@@ -24,7 +24,7 @@ const SellerCard = ({data}) => {
                     <Box display="flex" justifyContent="center" mt={0.5}>
                         <IconButton onClick={() => navigate("loan")}><Paid fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
                         <IconButton onClick={() => navigate("inventory")}><Inventory fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
-                        <IconButton onClick={() => navigate("profile")}><People fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
+                        <IconButton onClick={() => navigate("customer")}><People fontSize='small'  sx={{color:"primary.main"}}/></IconButton>
                     </Box>
                 </Box>
             </Box>

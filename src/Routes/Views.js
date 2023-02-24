@@ -13,11 +13,13 @@ import MShop from '../page/Mobile/Shop'
 // Web
 import WDashboard from '../page/Web/Dashboard';
 import WCustomer from '../page/Web/Customer';
+import WSeller from '../page/Web/Seller';
 import WInventory from '../page/Web/Inventory';
 import WProfile from '../page/Web/Profile';
 import WLoan from '../page/Web/Loan';
 import WShop from '../page/Web/Shop'
 import WLogin from '../page/Web/Login';
+import WShoppingHistory from '../page/Web/ShoppingHistory';
 
 import Index from '../page/Index'
 import NotFound from "../page/NotFound";
@@ -55,9 +57,12 @@ function Views() {
         <Route path="login" element={<WLogin />} />
         <Route element={<Protected isSignedIn={true} />}>
           <Route path="dashboard" element={<WDashboard />} />
-          <Route path="customer">
-            <Route index element={<WCustomer />} />
-            <Route path="profile" element={<WProfile />} />
+          <Route path="seller">
+            <Route index element={<WSeller />} />
+            <Route path="customer">
+              <Route index element={<WCustomer />} />
+              <Route path="shopping history" element={<WShoppingHistory />} />
+            </Route>
             <Route path="loan" element={<WLoan />} />
             <Route path="inventory" element={<WInventory />} />
           </Route>
