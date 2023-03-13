@@ -56,60 +56,100 @@ const ProfileForm = () => {
           </label>
         </Box>
 
-        <Box mb={1.5} width={"100%"} >
-          <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >Name</Typography>
+
+        <Box mt={1.5} width={"100%"} >
           <TextField
             variant="outlined"
             size='small'
             type="text"
             placeholder='Full Name'
             name='name'
-            sx={{ width: "100%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: 10 } }}
+            sx={style_txtbox}
             onChange={formik.handleChange}
             error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
             onBlur={formik.handleBlur}
           />
         </Box>
 
-        <Box mb={1.5} width={"100%"} >
-          <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >Address</Typography>
+        <Box mt={1.5} width={"100%"} >
           <TextField
             variant="outlined"
             size='small'
             type="text"
             placeholder='Address'
             name='address'
-            sx={{ width: "100%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: 10 } }}
+            sx={style_txtbox}
             onChange={formik.handleChange}
             error={formik.touched.address && Boolean(formik.errors.address)}
-            helperText={formik.touched.address && formik.errors.address}
             onBlur={formik.handleBlur}
           />
         </Box>
 
-        <Box width={"100%"} >
-          <Typography fontWeight={700} fontSize={14} sx={{ ml: 1.5 }} >Mobile</Typography>
+        <Box mt={1.5} width={"100%"} >
           <TextField
             variant="outlined"
             size='small'
             type="number"
             placeholder='Mobile'
             name='mobile'
-            sx={{ width: "100%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: 10 } }}
+            sx={style_txtbox}
             onChange={formik.handleChange}
             error={formik.touched.mobile && Boolean(formik.errors.mobile)}
-            helperText={formik.touched.mobile && formik.errors.mobile}
             onBlur={formik.handleBlur}
           />
         </Box>
+
+
+
+        <Box mt={1.5} width={"100%"} >
+          <TextField
+            variant="outlined"
+            size='small'
+            type="text"
+            placeholder='Full Name'
+            name='name'
+            sx={style_txtbox}
+            onChange={formik.handleChange}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            onBlur={formik.handleBlur}
+          />
+        </Box>
+
+        <Box mt={1.5} width={"100%"} >
+          <TextField
+            variant="outlined"
+            size='small'
+            type="text"
+            placeholder='Address'
+            name='address'
+            sx={style_txtbox}
+            onChange={formik.handleChange}
+            error={formik.touched.address && Boolean(formik.errors.address)}
+            onBlur={formik.handleBlur}
+          />
+        </Box>
+
+        <Box mt={1.5} width={"100%"} >
+          <TextField
+            variant="outlined"
+            size='small'
+            type="number"
+            placeholder='Mobile'
+            name='mobile'
+            sx={style_txtbox}
+            onChange={formik.handleChange}
+            error={formik.touched.mobile && Boolean(formik.errors.mobile)}
+            onBlur={formik.handleBlur}
+          />
+        </Box>
+
+
 
         <Box display="flex" justifyContent="end">
           <Button
             variant='contained'
             type="submit"
-            color='secondary'
-            sx={{ width: 100, mt: 3, mb: 1 }}
+            sx={style_btn}
           >
             Update
           </Button>
@@ -121,3 +161,23 @@ const ProfileForm = () => {
 }
 
 export default ProfileForm
+
+
+const style_txtbox = {
+  width: 500,
+  ".MuiOutlinedInput-root": {
+    bgcolor: "#3B3B3B",
+    borderRadius: 10
+  }
+}
+
+const style_btn = {
+  mt: 2,
+  mb: 2,
+  minWidth: 100,
+  bgcolor: "secondary.main",
+  color: "white",
+  ":hover": {
+    bgcolor: "secondary.light",
+  }
+}

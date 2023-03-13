@@ -1,13 +1,11 @@
-import { Box, Button, IconButton, Typography } from '@mui/material'
-import React from 'react'
-import BreadCrumbs from '../../Components/BreadCrumbs'
-import { DataGrid } from '@mui/x-data-grid';
-import { Add, Delete, Edit } from '@mui/icons-material';
+import { Box } from '@mui/material';
+import React from 'react';
+import Prof from "../../Dialogs/Profile/Profile"
 
 const Profile = () => {
   return (
-    <Box>
-      Profile
+    <Box  display="flex" justifyContent="center" width="100%">
+      <Prof/>
     </Box>
   )
 }

@@ -145,7 +145,7 @@ const Shop = () => {
           )}
         />
 
-        <Box display="flex" justifyContent="end" mr={5} sx={{ transform: "translate(360px,0)" }}>
+        <Box position="absolute"  sx={{ transform: "translate(38vw,0)" }}>
           <Button variant='contained' onClick={ () => navigate("login") }  >
             <Typography fontSize={15} fontWeight={600} color="white"> Login  </Typography>
             <Login fontSize='medium' sx={{ color: "white" }} />

@@ -56,7 +56,12 @@ function Views() {
         <Route index element={<WShop />} />
         <Route path="login" element={<WLogin />} />
         <Route element={<Protected isSignedIn={true} />}>
+
+          {/* admin and seller */}
           <Route path="dashboard" element={<WDashboard />} />
+          <Route path="profile" element={<WProfile />} />
+
+          {/* admin */}
           <Route path="seller">
             <Route index element={<WSeller />} />
             <Route path="customer">
@@ -66,7 +71,15 @@ function Views() {
             <Route path="loan" element={<WLoan />} />
             <Route path="inventory" element={<WInventory />} />
           </Route>
-          <Route path="profile" element={<WProfile />} />
+
+          {/* seller */}
+          <Route path="customer">
+            <Route index element={<WCustomer />} />
+            <Route path="shopping history" element={<WShoppingHistory />} />
+          </Route>
+          <Route path="loan" element={<WLoan />} />
+          <Route path="inventory" element={<WInventory />} />
+
         </Route>
       </Route>
 

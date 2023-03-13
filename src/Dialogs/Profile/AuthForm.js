@@ -38,49 +38,43 @@ const AuthForm = () => {
 
 
         <Box mb={1.5} width={"100%"} >
-          <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >Current Password</Typography>
           <TextField
             variant="outlined"
             size='small'
             type="password"
             placeholder='Current Password'
             name='currentPassword'
-            sx={{ width: "100%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: 10 } }}
+            sx={style_txtbox}
             onChange={formik.handleChange}
             error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
-            helperText={formik.touched.currentPassword && formik.errors.currentPassword}
             onBlur={formik.handleBlur}
           />
         </Box>
 
         <Box mb={1.5} width={"100%"} >
-          <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >New Password</Typography>
           <TextField
             variant="outlined"
             size='small'
             type="password"
             placeholder='New Password'
             name='newPassword'
-            sx={{ width: "100%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: 10 } }}
+            sx={style_txtbox}
             onChange={formik.handleChange}
             error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
-            helperText={formik.touched.newPassword && formik.errors.newPassword}
             onBlur={formik.handleBlur}
           />
         </Box>
 
         <Box width={"100%"} >
-          <Typography fontWeight={700} fontSize={14} sx={{ ml: 1.5 }} >Confirm Password</Typography>
           <TextField
             variant="outlined"
             size='small'
             type="password"
             placeholder='Confirm Password'
             name='confirmPassword'
-            sx={{ width: "100%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: 10 } }}
+            sx={style_txtbox}
             onChange={formik.handleChange}
             error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-            helperText={formik.touched.confirmPassword && formik.errors.mobile}
             onBlur={formik.handleBlur}
           />
         </Box>
@@ -89,8 +83,7 @@ const AuthForm = () => {
           <Button
             variant='contained'
             type="submit"
-            color='secondary'
-            sx={{ width: 100, mt: 3, mb: 1 }}
+            sx={style_btn}
           >
             Update
           </Button>
@@ -102,3 +95,23 @@ const AuthForm = () => {
 }
 
 export default AuthForm
+
+
+const style_txtbox = {
+  width: "100%",
+  ".MuiOutlinedInput-root": {
+    bgcolor: "#3B3B3B",
+    borderRadius: 10
+  }
+}
+
+const style_btn = {
+  mt: 2,
+  mb: 2,
+  minWidth: 100,
+  bgcolor: "secondary.main",
+  color: "white",
+  ":hover": {
+    bgcolor: "secondary.light",
+  }
+}

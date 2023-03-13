@@ -1,10 +1,13 @@
-import { Autocomplete, Box, IconButton, Paper, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, Fab, IconButton, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { FilterAlt, Login, Search } from '@mui/icons-material';
+import { FilterAlt, Login, Search, ShoppingCart } from '@mui/icons-material';
 import ProductCard from "../../Components/ProductCard"
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Shop = () => {
+
+  const auth = useSelector(state => state.auth)
 
   const navigate = useNavigate()
 
@@ -116,6 +119,21 @@ const Shop = () => {
         <Typography textAlign="center" fontSize={16} fontWeight={600}>Buy Now, Pay Later</Typography>
       </Box>
 
+      <Box display="flex" justifyContent="center" >
+        {auth.status ?
+          <Box position="absolute" bottom={15} right={20}  >
+            <Fab color='primary' sx={{boxShadow:10}}>
+              <ShoppingCart sx={{ color: "white"}} />
+            </Fab>
+          </Box>
+          :
+          <Button variant='contained' onClick={() => navigate("login")} sx={{ mt: 2 }} >
+            <Typography fontSize={15} fontWeight={600} color="white"> Login  </Typography>
+            <Login fontSize='medium' sx={{ color: "white" }} />
+          </Button>
+        }
+      </Box>
+
 
       <Box display="flex" justifyContent="center" mt={2}>
         <Autocomplete
@@ -125,7 +143,7 @@ const Shop = () => {
           // onChange={(e, value) => formik.values[data.value] = value.value}
           getOptionLabel={option => option.name}
           PaperComponent={params => <Paper {...params} sx={{ ...paperStyle }} />}
-          sx={{ minWidth: 260, width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important" } }}
+          sx={{ minWidth: 300, width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important" } }}
           renderInput={(params) => (
             < TextField
               {...params}
@@ -144,16 +162,14 @@ const Shop = () => {
             />
           )}
         />
-        <IconButton size='small' sx={{ bgcolor: "primary.main", ml: 1 }} onClick={() => navigate("login")}    >
-          <Login fontSize='medium' sx={{ color: "white" }} />
-        </IconButton>
+
       </Box>
 
 
       <Box display="flex" flexDirection={"column"} mt={2}>
 
         {/* Fitler */}
-        <Box width={300} alignSelf="center" bgcolor="#3B3B3B" borderRadius={5} display="flex" flexDirection="column" p={2} alignItems="center">
+        <Box width={300} alignSelf="center" bgcolor="#3B3B3B" borderRadius={5} display="flex" flexDirection="column" p={1} alignItems="center">
           <Box display="flex" >
             <Typography mb={2} fontSize={16} fontWeight={600} color="primary.main"> Filters  </Typography>
             <FilterAlt fontSize='small' sx={{ color: "primary.main" }} />
@@ -205,7 +221,7 @@ const Shop = () => {
 
       {/* Footer */}
       <Typography textAlign="center" mx="auto" mt={2} fontSize={14} fontWeight={500} color="primary.main"> 2023 Bubmble Bee All Rights Reserved  </Typography>
-    </Box>
+    </Box >
   )
 }
 
