@@ -11,7 +11,6 @@ const MessageSlice = createSlice({
     initialState,
     reducers: {
         show: (state, payload) => {
-            console.log(payload);
             const [msg, variant = "success"] = payload?.payload
             state.status = true
             state.msg = msg

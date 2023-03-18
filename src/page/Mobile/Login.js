@@ -2,7 +2,7 @@ import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from "react-router-dom";
-import { login } from "../../services/user";
+// import { login } from "../../services/user";
 import { useDispatch } from 'react-redux';
 import { messageActions } from '../../Store/messageSlice';
 import { authActions } from '../../Store/authSlice';
@@ -14,15 +14,15 @@ const Login = () => {
   const dispatch = useDispatch()
 
   const onSubmit = async ({ username, password }) => {
-    const response = await login({ username, password })
-    if (response.status !== 200) dispatch(messageActions.show([response.data, "error"]))
-    if (response.status === 200) {
-      dispatch(authActions.login({
-        username: response.data.user.username,
-        userID: response.data.user._id,
-      }))
-      navigate("Dashboard")
-    }
+    // const response = await login({ username, password })
+    // if (response.status !== 200) dispatch(messageActions.show([response.data, "error"]))
+    // if (response.status === 200) {
+    //   dispatch(authActions.login({
+    //     username: response.data.user.username,
+    //     userID: response.data.user._id,
+    //   }))
+    //   navigate("Dashboard")
+    // }
   }
 
   const initVals = {

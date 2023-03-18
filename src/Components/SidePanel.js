@@ -27,7 +27,7 @@ const SidePanel = () => {
     setCurrent(pathArrays[1])
   }, [location])
 
-  const buttonOnClick = (name) => (name === "Logout") && dispatch(authActions.reset())
+  const buttonOnClick = (name) => (name === "Logout") && dispatch(authActions.logout())
 
   const hoverStyle = () => {
     let element = null

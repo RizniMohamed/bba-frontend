@@ -4,7 +4,7 @@ const initialState = {
     status: false,
     username: undefined,
     userID: undefined,
-    role : "admin"
+    role : "seller"
 }
 
 const authSlice = createSlice({

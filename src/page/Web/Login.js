@@ -1,5 +1,4 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
 import logo from '../../LocalData/image/logo.png'
 import loginwall from '../../LocalData/image/loginwall.png'
 import { dialogActions } from '../../Store/dialogSlice';
@@ -7,8 +6,9 @@ import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-// import { loginUser } from '../../services/user';
-// import { authActions } from '../../store/authSlice';
+import { login } from '../../Services/user';
+import { messageActions } from '../../Store/messageSlice';
+import { authActions } from '../../Store/authSlice';
 
 const Login = () => {
 
@@ -30,30 +30,26 @@ const Login = () => {
     { name: "Password", value: "password", placeholder: "password", options: { type: "password" } },
   ]
 
-  const OnClick_CreateAccount = () => dispatch(dialogActions.show([ "signup" ]))
-  const onClick_forgetPassword = () => dispatch(dialogActions.show([ "OTP" ]))
+  const OnClick_CreateAccount = () => dispatch(dialogActions.show(["signup"]))
+  const onClick_forgetPassword = () => dispatch(dialogActions.show(["OTP"]))
 
   const onSubmit = async ({ email, password }) => {
     const sendData = { email, password }
-    alert("login success")
-    console.log(sendData);
-    // const { data, status } = await loginUser(sendData)
 
-    // if (status !== 200) {
-    //   setMsg({ variant: "red", msg: data })
-    //   return
-    // }
+    const { data, status } = await login(sendData)
 
-    // const authData = {
-    //   role: data.user.role,
-    //   userID: data.user._id,
-    //   token: data.token,
-    //   email: data.user.email,
-    // }
-    // dispatch(authActions.set(authData))
-    // setMsg({ variant: "green", msg: "Login Succeed" })
-    // navigate(`/${data.user.role}/home`)
+    if (status !== 200) {
+      dispatch(messageActions.show(["Invalid Credentials", "error"]))
+      return
+    }
 
+    const authData = {
+      role: data.role.name,
+      userID: data.id,
+      email: data.email,
+    }
+    dispatch(authActions.login(authData))
+    navigate(`/w/Dashboard`)
   }
 
   const formik = useFormik({
@@ -73,8 +69,8 @@ const Login = () => {
         <Box width="25%" display="flex" flexDirection="column" alignItems="center" >
           <Box component="img" src={logo} alt='login Image' width={200} height={200} my={5} />
 
-          <Typography fontWeight={700} fontSize={34} sx={{ my: 0, color: "primary.main" }}  textAlign="center">Login</Typography>
-          
+          <Typography fontWeight={700} fontSize={34} sx={{ my: 0, color: "primary.main" }} textAlign="center">Login</Typography>
+
           <form onSubmit={formik.handleSubmit}>
 
             <Box sx={{ display: "flex", flexDirection: "column", alignSelf: "center", width: 300, }}>
@@ -95,14 +91,14 @@ const Login = () => {
                         ".MuiOutlinedInput-root": {
                           bgcolor: "#3B3B3B",
                           borderRadius: 10,
-                          color:"white"
+                          color: "white"
                         }
                       }}
                       error={formik.touched[data.value] && Boolean(formik.errors[data.value])}
                       onBlur={formik.handleBlur}
                       {...data.options}
                     />
-                    
+
                   </Box>
                 )
               })}

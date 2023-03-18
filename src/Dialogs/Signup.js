@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Dialog, DialogContent, Divider, IconButton, Input, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, CircularProgress, Dialog, DialogContent, Divider, IconButton, Input, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,33 +6,35 @@ import * as yup from 'yup';
 import { dialogActions } from '../Store/dialogSlice';
 import HelpIcon from '@mui/icons-material/Help';
 import PopoverRole from './PopoverRole';
-import { ArrowBack, ArrowBackIosNew, ArrowBackIosOutlined, ArrowBackIosRounded, ArrowForward, ArrowForwardIosOutlined, ArrowForwardIosRounded } from '@mui/icons-material';
+import { ArrowBackIosRounded, ArrowForwardIosRounded } from '@mui/icons-material';
+import { signup } from '../Services/user';
+import { messageActions } from '../Store/messageSlice';
 
 const initVals = {
-  fullName: "",
+  name: "",
   email: "",
   age: "",
-  mobile: "",
+  contact: "",
   address: "",
   password: "",
   confirmPassword: "",
-  userImage: "",
+  image: "",
 
-  shopname: "",
-  shopaddress: "",
+  shopName: "",
+  shopAddress: "",
   shopImage: "",
 }
 
 const Schema = yup.object().shape({
-  fullName: yup.string().required("Required*"),
+  name: yup.string().required("Required*"),
   email: yup.string().required("Required*").email("Email must be in valid format"),
-  shopname: yup.string().required("Required*"),
+  shopName: yup.string().required("Required*"),
   address: yup.string().required("Required*"),
-  shopaddress: yup.string().required("Required*"),
+  shopAddress: yup.string().required("Required*"),
   shopImage: yup.mixed().required("Required*"),
-  userImage: yup.mixed().required("Required*"),
+  image: yup.mixed().required("Required*"),
   age: yup.number().required("Required*"),
-  mobile: yup.string().required("Required*").test("len", "Invalid Phone number", (val) => {
+  contact: yup.string().required("Required*").test("len", "Invalid Phone number", (val) => {
     if ((val?.length === 9)) return true
   }),
   password: yup.string().required("Required*").matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.#?!@$%^&*-]).{8,}$/,
@@ -41,9 +43,9 @@ const Schema = yup.object().shape({
 })
 
 const renderUserData = [
-  { name: "Full Name", value: "fullName", placeholder: "Full Name" },
+  { name: "Full Name", value: "name", placeholder: "Full Name" },
   { name: "Email", value: "email", placeholder: "Email", options: { type: "email" } },
-  { name: "Mobile", value: "mobile", placeholder: "7X XX XX XXX", options: { type: "number" } },
+  { name: "Contact", value: "contact", placeholder: "7X XX XX XXX", options: { type: "number" } },
   { name: "Age", value: "age", placeholder: "Age", options: { type: "number" } },
   { name: "Address", value: "address", placeholder: "Address" },
   { name: "Password", value: "password", placeholder: "Password", options: { type: "password" } },
@@ -51,8 +53,8 @@ const renderUserData = [
 ]
 
 const renderShopData = [
-  { name: "Shop Name", value: "shopname", placeholder: "Shop Name", },
-  { name: "Address", value: "shopaddress", placeholder: "Address" },
+  { name: "Shop Name", value: "shopName", placeholder: "Shop Name", },
+  { name: "Address", value: "shopAddress", placeholder: "Address" },
 ]
 
 const Signup = () => {
@@ -60,8 +62,9 @@ const Signup = () => {
   const dispatch = useDispatch()
 
   const [shopImage, setShopImage] = useState("")
-  const [userImage, setUserImage] = useState("")
+  const [image, setimage] = useState("")
   const [helpRoleAnchor, setHelpRoleAnchor] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   const [section, setSection] = useState(1)
   const sectionMax = 2
@@ -69,30 +72,43 @@ const Signup = () => {
   const handleHelpRole = (event) => setHelpRoleAnchor(event.currentTarget);
 
   const handleShopImageChange = (e) => {
-    formik.values.shopImage = e.target.files[0]
-    setShopImage(URL.createObjectURL(formik.values.shopImage))
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result.replace(/^data:image\/(png|jpeg);base64,/, '');
+      formik.values.shopImage = base64
+      setShopImage(URL.createObjectURL(e.target.files[0]))
+    };
+    reader.readAsDataURL(e.target.files[0]);
   }
 
-  const handleUserImageChange = (e) => {
-    formik.values.userImage = e.target.files[0]
-    setUserImage(URL.createObjectURL(formik.values.userImage))
+  const handleimageChange = (e) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result.replace(/^data:image\/(png|jpeg);base64,/, '');
+      formik.values.image = base64
+      setimage(URL.createObjectURL(e.target.files[0]))
+    };
+    reader.readAsDataURL(e.target.files[0]);
   }
 
   const handleNextSection = () => setSection(section + 1)
   const handleBackSection = () => setSection(section - 1)
 
   const onSubmit = async (inputData) => {
-    alert("Signup Success")
+    setLoading(true)
     console.log(inputData)
-    // const { data, status } = await singupUser(inputData)
-    // if (status !== 200) {
-    //   setMsg({ variant: "red", msg: data })
-    //   return
-    // }
-
-    // setMsg({ variant: "green", msg: "Registeration Succeed" })
-    // dispatch(dialogActions.hide('signup'))
-
+    inputData['roleID'] = 2 // seller
+    const { data, status } = await signup(inputData)
+    console.log(data);
+    if (status !== 200) {
+      setLoading(false)
+      dispatch(messageActions.show([data, "error"]))
+      return
+    }
+    setLoading(false)
+    dispatch(messageActions.show(["Registeration succeed"]))
+    dispatch(messageActions.show(["Please login"]))
+    dispatch(dialogActions.hide('signup'))
   }
 
   const formik = useFormik({
@@ -103,7 +119,13 @@ const Signup = () => {
 
   return (
     <Dialog
-      open={status} onClose={() => { formik.resetForm(); dispatch(dialogActions.hide("signup")) }} sx={style_dialog}>
+      open={status} onClose={() => {
+        formik.resetForm();
+        dispatch(dialogActions.hide("signup"))
+        setShopImage(false)
+        setimage(false)
+        setSection(1)
+      }} sx={style_dialog}>
       <Typography fontWeight={700} fontSize={34} sx={{ mt: 3, mb: 1 }} textAlign="center">Register</Typography>
       <form onSubmit={formik.handleSubmit}>
 
@@ -121,14 +143,14 @@ const Signup = () => {
                     type="file"
                     name='image'
                     sx={{ display: 'none' }}
-                    onChange={handleUserImageChange}
+                    onChange={handleimageChange}
                   />
                   <IconButton color="primary" aria-label="upload picture" component="span"
                     sx={{
-                      border: formik.touched.userImage && Boolean(formik.errors.userImage) ? "2px solid red" : "",
-                      borderRadius:10,
+                      border: formik.touched.image && Boolean(formik.errors.image) ? "2px solid red" : "",
+                      borderRadius: 10,
                     }} >
-                    <Avatar variant='rounded' src={userImage} sx={{ height: 125, width: 125, borderRadius:10, }} />
+                    <Avatar variant='rounded' src={image} sx={{ height: 125, width: 125, borderRadius: 10, }} />
                   </IconButton>
                 </label>
               </Box>
@@ -235,7 +257,9 @@ const Signup = () => {
             </IconButton>
           </Box>
 
-          {section == sectionMax && <Button
+          {loading && <CircularProgress sx={{ mx: "auto", width: "100%" }} size={30} />}
+
+          {section === sectionMax && !loading && <Button
             variant='contained'
             type="submit"
             sx={{ width: 180, alignSelf: "center", color: "white", mt: 3, mb: 1 }}>

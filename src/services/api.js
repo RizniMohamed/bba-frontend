@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: "https://studygraph-backend.onrender.com/api/v1/",
+  baseURL: "http://localhost:8080/api",
 });
 
 export default API
