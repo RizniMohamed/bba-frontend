@@ -11,7 +11,26 @@ export const getLoanBySeller = async (userID) => {
 
 export const createLoan = async (data) => {
     try {
-        const response = await API.post(`loan`,data)
+        const response = await API.post(`loan`, data)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+
+export const deleteLoan = async (loanID) => {
+    try {
+        const response = await API.delete(`loan/${loanID}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+export const upadateLoan = async (loanID, data) => {
+    try {
+        const response = await API.put(`loan/${loanID}`, data)
         return response.data
     } catch (error) {
         throw error

@@ -6,7 +6,7 @@ import { Add, Delete, Edit } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { dialogActions } from '../../Store/dialogSlice';
 import { messageActions } from '../../Store/messageSlice';
-import { createLoan, getLoanBySeller } from '../../Services/loan';
+import { createLoan, deleteLoan, getLoanBySeller, upadateLoan } from '../../Services/loan';
 
 const Loan = () => {
 
@@ -24,7 +24,7 @@ const Loan = () => {
     {
       field: 'edit', headerName: 'Edit', flex: 1, width: 130, headerAlign: "center", align: 'center',
       renderCell: (params) => (
-        <IconButton onClick={() => handleEdit(params.row)} size='small' sx={{ color: "#FF8B03", bgcolor: "#3B3B3B !important" }}>
+        params.row.name.toLowerCase() !== "free" && <IconButton onClick={() => handleEdit(params.row)} size='small' sx={{ color: "#FF8B03", bgcolor: "#3B3B3B !important" }}>
           <Edit fontSize='small' sx={{ color: "#FF8B03 !important" }} />
         </IconButton>
       )
@@ -32,7 +32,7 @@ const Loan = () => {
     {
       field: 'delete', headerName: 'Delete', flex: 1, width: 130, headerAlign: "center", align: 'center',
       renderCell: (params) => (
-        <IconButton onClick={() => handleDelete(params.row)} size='small' sx={{ color: "red", bgcolor: "#3B3B3B !important" }}>
+        params.row.name.toLowerCase() !== "free" && <IconButton disabled={params.row.name === "free"} onClick={() => handleDelete(params.row)} size='small' sx={{ color: "red", bgcolor: "#3B3B3B !important" }}>
           <Delete fontSize='small' sx={{ color: "red !important" }} />
         </IconButton>
       )
@@ -42,23 +42,35 @@ const Loan = () => {
   const handleDelete = row => {
     dispatch(dialogActions.show([
       "delete",
-      (formData) => {
-        alert("Deleted " + row.id)
+      async () => {
+        const { data, status } = await deleteLoan(row.id);
+        if (status !== 200) {
+          dispatch(messageActions.show([data, "error"]))
+          return
+        }
+        dispatch(messageActions.show([data]))
+        loadData()
+        dispatch(dialogActions.hide("delete"))
       },
       "Are you sure do you want to delete this loan scheme? All purchaes assoicated with this loan will also deleted"
     ]))
-    console.log(row);
   }
 
   const handleEdit = row => {
     dispatch(dialogActions.show([
       "loan",
-      (formData) => {
-        alert("Updated " + row.id)
+      async (inVals) => {
+        const { data, status } = await upadateLoan(row.id,inVals);
+        if (status !== 200) {
+          dispatch(messageActions.show([data, "error"]))
+          return
+        }
+        dispatch(messageActions.show([data]))
+        loadData()
+        dispatch(dialogActions.hide("loan"))
       },
       row
     ]))
-    console.log(row);
   }
 
 
@@ -68,7 +80,6 @@ const Loan = () => {
       async (inVals) => {
         inVals['userID'] = auth.userID
         const { data, status } = await createLoan(inVals);
-        console.log(data, status);
         if (status !== 200) {
           dispatch(messageActions.show([data, "error"]))
           return

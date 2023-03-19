@@ -125,6 +125,7 @@ const Signup = () => {
         setShopImage(false)
         setimage(false)
         setSection(1)
+        setLoading(false)
       }} sx={style_dialog}>
       <Typography fontWeight={700} fontSize={34} sx={{ mt: 3, mb: 1 }} textAlign="center">Register</Typography>
       <form onSubmit={formik.handleSubmit}>
