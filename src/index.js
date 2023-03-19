@@ -5,7 +5,8 @@ import { CssBaseline, createTheme } from '@mui/material';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { store } from './Store/store';
+import { persistor, store } from './Store/store';
+import { PersistGate } from 'redux-persist/integration/react';
 import Theme from './Theme/theme'
 import Views from './Routes/Views';
 import Dialogs from './Dialogs/Dialogs';
@@ -18,11 +19,13 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Views />
-          <Dialogs />
-        </ThemeProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Views />
+            <Dialogs />
+          </ThemeProvider>
+        </PersistGate>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>

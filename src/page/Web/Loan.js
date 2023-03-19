@@ -1,50 +1,18 @@
 import { Box, Button, IconButton, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import BreadCrumbs from '../../Components/BreadCrumbs'
 import { DataGrid } from '@mui/x-data-grid';
 import { Add, Delete, Edit } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { dialogActions } from '../../Store/dialogSlice';
 import { messageActions } from '../../Store/messageSlice';
+import { createLoan, getLoanBySeller } from '../../Services/loan';
 
 const Loan = () => {
 
   const dispatch = useDispatch()
-
-  const loanDetails = [
-    {
-      id: 1,
-      name: "default",
-      startPrice: 0,
-      endPrice: 15000,
-      interest: 0,
-      installment: 3
-    },
-    {
-      id: 2,
-      name: "basic",
-      startPrice: 15000,
-      endPrice: 25000,
-      interest: 3,
-      installment: 3
-    },
-    {
-      id: 3,
-      name: "medium",
-      startPrice: 25000,
-      endPrice: 50000,
-      interest: 5,
-      installment: 3
-    },
-    {
-      id: 4,
-      name: "pro",
-      startPrice: 50000,
-      endPrice: 100000,
-      interest: 10,
-      installment: 4
-    },
-  ]
+  const auth = useSelector(state => state.auth)
+  const [loans, SetLoans] = useState([])
 
   const columns = [
     { field: 'id', headerName: 'ID', flex: 1, width: 130, headerAlign: "center", align: 'center' },
@@ -52,7 +20,7 @@ const Loan = () => {
     { field: 'startPrice', headerName: 'Start Price LKR', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     { field: 'endPrice', headerName: 'End Price LKR', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     { field: 'interest', headerName: 'interest (%)', flex: 1, width: 130, headerAlign: "center", align: 'center' },
-    { field: 'installment', headerName: 'installment Steps', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'steps', headerName: 'installment Steps', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     {
       field: 'edit', headerName: 'Edit', flex: 1, width: 130, headerAlign: "center", align: 'center',
       renderCell: (params) => (
@@ -97,12 +65,29 @@ const Loan = () => {
   const handleAdd = () => {
     dispatch(dialogActions.show([
       "loan",
-      () => {
-        dispatch(messageActions.show(['Loan created successfully']))
+      async (inVals) => {
+        inVals['userID'] = auth.userID
+        const { data, status } = await createLoan(inVals);
+        console.log(data, status);
+        if (status !== 200) {
+          dispatch(messageActions.show([data, "error"]))
+          return
+        }
+        dispatch(messageActions.show([data]))
+        loadData()
+        dispatch(dialogActions.hide("loan"))
       },
       "create"
     ]))
   }
+
+  const loadData = async () => {
+    const { data, status } = await getLoanBySeller(auth.userID);
+    if (status === 200) SetLoans(data)
+  }
+
+  useEffect(() => { loadData() }, [])
+
 
   return (
     <Box width="100%" >
@@ -114,11 +99,10 @@ const Loan = () => {
           <Add fontSize='small' sx={{ color: "white" }} />
         </Button>
       </Box>
-      
-    
+
       <Box mt={2}>
         <DataGrid
-          rows={loanDetails}
+          rows={loans}
           columns={columns}
           autoHeight={true}
           hideFooter={true}

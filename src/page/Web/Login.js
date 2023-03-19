@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material'
 import logo from '../../LocalData/image/logo.png'
 import loginwall from '../../LocalData/image/loginwall.png'
 import { dialogActions } from '../../Store/dialogSlice';
@@ -9,11 +9,13 @@ import * as yup from 'yup';
 import { login } from '../../Services/user';
 import { messageActions } from '../../Store/messageSlice';
 import { authActions } from '../../Store/authSlice';
+import { useState } from 'react';
 
 const Login = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
 
   let initVals = {
     email: "",
@@ -34,6 +36,8 @@ const Login = () => {
   const onClick_forgetPassword = () => dispatch(dialogActions.show(["OTP"]))
 
   const onSubmit = async ({ email, password }) => {
+
+    setLoading(true)
     const sendData = { email, password }
 
     const { data, status } = await login(sendData)
@@ -49,6 +53,7 @@ const Login = () => {
       email: data.email,
     }
     dispatch(authActions.login(authData))
+    setLoading(false)
     navigate(`/w/Dashboard`)
   }
 
@@ -103,13 +108,17 @@ const Login = () => {
                 )
               })}
 
-              <Button
+              {!loading ? <Button
                 variant='contained'
                 type="submit"
                 size="medium"
-                sx={{ width: 180, alignSelf: "center", color: "white", my: 2 }}>
+                sx={{ width: 180, alignSelf: "center", color: "white", my: 2, }}>
                 Login
               </Button>
+                :
+                <CircularProgress sx={{ mx: "auto", color: "white", my: 2 }} size={25} />
+              }
+
 
             </Box >
 

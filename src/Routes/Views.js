@@ -46,7 +46,6 @@ const Protected = ({ isSignedIn }) => {
 
 function Views() {
   const authSate = useSelector(state => state.auth.status)
-
   return (
     <Routes>
 
@@ -55,7 +54,7 @@ function Views() {
       <Route path="w">
         <Route index element={<WShop />} />
         <Route path="login" element={<WLogin />} />
-        <Route element={<Protected isSignedIn={true} />}>
+        <Route element={<Protected isSignedIn={authSate} />}>
 
           {/* admin and seller */}
           <Route path="dashboard" element={<WDashboard />} />

@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import { dialogActions } from '../Store/dialogSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { Box, Button, TextField, Typography, Dialog, DialogContent, DialogTitle } from '@mui/material'
-import { messageActions } from "../Store/messageSlice"
-// import { sendMail } from '../../services/mail'
-// import { getUser_FP } from '../../services/user'
+import { Box, Button, TextField, Dialog, DialogContent, DialogTitle } from '@mui/material'
 
 const Loan = () => {
     const dispatch = useDispatch()
@@ -17,11 +14,8 @@ const Loan = () => {
         startPrice: undefined,
         endPrice: undefined,
         interest: undefined,
-        installmentSteps: undefined
+        steps: undefined
     }
-
-
-
 
     const Schema = yup.object().shape({
         name: yup.string().required("Required*"),
@@ -30,7 +24,7 @@ const Loan = () => {
             test: (value, context) => value > parseInt(context.parent.startPrice),
         }).required("Required*"),
         interest: yup.number().min(0).required("Required*"),
-        installmentSteps: yup.number().min(3).required("Required*"),
+        steps: yup.number().min(3).required("Required*"),
     })
 
     const renderData = [
@@ -38,7 +32,7 @@ const Loan = () => {
         { name: "startPrice", placeholder: "Start Price LKR", defaultValue: data?.startPrice, options: { type: "number", } },
         { name: "endPrice", placeholder: "End Price LKR", defaultValue: data?.endPrice, options: { type: "number", } },
         { name: "interest", placeholder: "Interest (%)", defaultValue: data?.interest, options: { type: "number", } },
-        { name: "installmentSteps", placeholder: "Installment Steps", defaultValue: data?.installment, options: { type: "number", } },
+        { name: "steps", placeholder: "Installment Steps", defaultValue: data?.steps, options: { type: "number", } },
     ]
 
     const formik = useFormik({
@@ -52,7 +46,7 @@ const Loan = () => {
         formik.values.startPrice = data?.startPrice
         formik.values.endPrice = data?.endPrice
         formik.values.interest = data?.interest
-        formik.values.installmentSteps = data?.installment
+        formik.values.steps = data?.steps
     }, [data])
 
 
