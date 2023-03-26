@@ -44,6 +44,7 @@ const Login = () => {
 
     if (status !== 200) {
       dispatch(messageActions.show(["Invalid Credentials", "error"]))
+      setLoading(false)
       return
     }
 

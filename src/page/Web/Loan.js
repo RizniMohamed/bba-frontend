@@ -6,7 +6,8 @@ import { Add, Delete, Edit } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { dialogActions } from '../../Store/dialogSlice';
 import { messageActions } from '../../Store/messageSlice';
-import { createLoan, deleteLoan, getLoanBySeller, upadateLoan } from '../../Services/loan';
+import { createLoan, deleteLoan, getLoanByShop, upadateLoan } from '../../Services/loan';
+import { getShopBySeller } from '../../Services/shop';
 
 const Loan = () => {
 
@@ -60,7 +61,7 @@ const Loan = () => {
     dispatch(dialogActions.show([
       "loan",
       async (inVals) => {
-        const { data, status } = await upadateLoan(row.id,inVals);
+        const { data, status } = await upadateLoan(row.id, inVals);
         if (status !== 200) {
           dispatch(messageActions.show([data, "error"]))
           return
@@ -78,7 +79,12 @@ const Loan = () => {
     dispatch(dialogActions.show([
       "loan",
       async (inVals) => {
-        inVals['userID'] = auth.userID
+        const { data: shopData, status: shopStatus } = await getShopBySeller(auth.userID)
+        if (shopStatus !== 200) {
+          dispatch(messageActions.show([shopData, "error"]))
+          return
+        }
+        inVals['shopID'] = shopData.id
         const { data, status } = await createLoan(inVals);
         if (status !== 200) {
           dispatch(messageActions.show([data, "error"]))
@@ -93,7 +99,12 @@ const Loan = () => {
   }
 
   const loadData = async () => {
-    const { data, status } = await getLoanBySeller(auth.userID);
+    const { data: shopData, status: shopStatus } = await getShopBySeller(auth.userID)
+    if (shopStatus !== 200) {
+      dispatch(messageActions.show([shopData, "error"]))
+      return
+    }
+    const { data, status } = await getLoanByShop(shopData.id);
     if (status === 200) SetLoans(data)
   }
 

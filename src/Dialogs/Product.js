@@ -1,47 +1,92 @@
-import { Avatar, Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Input, TextField } from '@mui/material'
+import { Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Input, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 import defaultProduct from '../LocalData/image/default_product.png'
+import { createProduct, upadateProduct } from '../Services/product'
+import { getShopBySeller } from '../Services/shop'
 import { dialogActions } from '../Store/dialogSlice'
-// import { sendMail } from '../../services/mail'
-// import { getUser_FP } from '../../services/user'
+import { messageActions } from '../Store/messageSlice'
+
+const initVals = {
+    image: undefined,
+    name: undefined,
+    price: undefined,
+    quantity: undefined,
+}
 
 const Product = () => {
     const dispatch = useDispatch()
-    const { status, data, onSubmit } = useSelector(state => state.dialog.product)
+    const auth = useSelector(state => state.auth)
 
+    const { status, data, onSubmit } = useSelector(state => state.dialog.product)
     const [image, setImage] = useState(defaultProduct)
+    const [loading, setLoading] = useState(false)
+
 
     const handleAvatarChange = (e) => {
-        formik.values.image = e.target.files[0]
-        formik.errors.image = undefined
-        setImage(URL.createObjectURL(formik.values.image))
-    }
-    const initVals = {
-        image: undefined,
-        name: undefined,
-        price: undefined,
-        quantity: undefined,
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64 = reader.result.replace(/^data:image\/(png|jpeg);base64,/, '');
+            formik.values.image = base64
+            setImage(URL.createObjectURL(e.target.files[0]))
+        };
+        reader.readAsDataURL(e.target.files[0]);
     }
 
     const Schema = yup.object().shape({
-        name: yup.string().required("Required*"),
-        price: yup.number().min(0).required("Required*"),
-        quantity: yup.number().min(0).required("Required*"),
-        image: yup.mixed().required("Required*")
+        name: yup.string(),
+        price: yup.number(),
+        quantity: yup.number(),
+        image: yup.mixed()
     })
+
 
     const renderData = [
         { name: "name", placeholder: "product Name", defaultValue: data?.name, },
-        { name: "price", placeholder: "Price LKR", defaultValue: data?.price, options: { type: "number", } },
+        { name: "price", placeholder: "Price LKR", defaultValue: data?.price, options: { type: "number", inputProps: { step: 0.01 } } },
         { name: "quantity", placeholder: "Quantity", defaultValue: data?.quantity, options: { type: "number", } },
     ]
 
+    const create = async (inVals) => {
+        setLoading(true)
+        const { data: shopData, status: shopStatus } = await getShopBySeller(auth.userID)
+        if (shopStatus !== 200) {
+            dispatch(messageActions.show([shopData, "error"]))
+            setLoading(false)
+            return
+        }
+        inVals['shopID'] = shopData.id
+        const { data, status } = await createProduct(inVals);
+        if (status !== 200) {
+            dispatch(messageActions.show([data, "error"]))
+            setLoading(false)
+            return
+        }
+        setLoading(false)
+        dispatch(messageActions.show([data]))
+        onSubmit()
+        dispatch(dialogActions.hide("product"))
+    }
+
+    const update = async (inVals) => {
+        setLoading(true)
+        const { data: productData, status } = await upadateProduct(data.id, inVals);
+        if (status !== 200) {
+            dispatch(messageActions.show([productData, "error"]))
+            setLoading(false)
+            return
+        }
+        setLoading(false)
+        dispatch(messageActions.show([productData]))
+        onSubmit()
+        dispatch(dialogActions.hide("product"))
+    }
+
     const formik = useFormik({
         initialValues: initVals,
-        onSubmit: onSubmit,
+        onSubmit: data === "create" ? create : update,
         validationSchema: Schema,
     })
 
@@ -57,6 +102,7 @@ const Product = () => {
         <Dialog open={status} onClose={() => {
             formik.resetForm()
             setImage(defaultProduct)
+            setLoading(false)
             dispatch(dialogActions.hide("product"))
         }}  >
             <DialogTitle fontWeight={700} fontSize={34} textAlign="center">Product</DialogTitle>
@@ -76,7 +122,7 @@ const Product = () => {
                             />
                             <IconButton color="primary" aria-label="upload picture" component="span"
                                 sx={{
-                                    border: formik.touched.image && Boolean(formik.errors.image) ?  "2px solid red": "",
+                                    border: formik.touched.image && Boolean(formik.errors.image) ? "2px solid red" : "",
                                     borderRadius: 0.5,
                                 }} >
                                 <Avatar variant='square' src={image} sx={{ height: 125, width: 125, borderRadius: 0.5, }} />
@@ -105,13 +151,13 @@ const Product = () => {
                     })}
 
                     <Box display="flex" justifyContent="end">
-                        <Button
+                        {!loading ? <Button
                             variant='contained'
                             type="submit"
                             size="small"
                             sx={style_btn}>
                             {data === "create" ? "Create" : "Update"}
-                        </Button>
+                        </Button> : <CircularProgress sx={{ my: 2, mr: 2, width: "100%" }} size={25} />}
                     </Box>
 
                 </form>

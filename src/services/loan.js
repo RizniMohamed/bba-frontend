@@ -1,8 +1,8 @@
 import API from "./api"
 
-export const getLoanBySeller = async (userID) => {
+export const getLoanByShop = async (shopID) => {
     try {
-        const response = await API.get(`loan/${userID}`)
+        const response = await API.get(`loan/${shopID}`)
         return response.data
     } catch (error) {
         throw error

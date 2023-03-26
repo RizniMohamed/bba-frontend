@@ -2,7 +2,7 @@ import { Avatar, Box, Button, IconButton, Slider, Typography } from '@mui/materi
 import React from 'react'
 import BreadCrumbs from '../../Components/BreadCrumbs'
 import { DataGrid } from '@mui/x-data-grid';
-import { Add, Delete, Edit, Paid, Receipt, ShoppingBag } from '@mui/icons-material';
+import { Add, Delete, Details, Edit, FeedOutlined, Paid, Receipt, ShoppingBag } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { dialogActions } from '../../Store/dialogSlice';
 import defaultProduct from '../../LocalData/image/default_product.png'
@@ -17,7 +17,7 @@ const ShoppingHistory = () => {
       name: "default",
       installemt_total: 3,
       installment_paid: 2,
-      product_price: 12554,
+      totalPrice: 12554,
       paid: 4556,
     },
     {
@@ -26,7 +26,7 @@ const ShoppingHistory = () => {
       name: "basic",
       installemt_total: 3,
       installment_paid: 3,
-      product_price: 12554,
+      totalPrice: 12554,
       paid: 4556,
     },
     {
@@ -35,7 +35,7 @@ const ShoppingHistory = () => {
       name: "medium",
       installemt_total: 3,
       installment_paid: 1,
-      product_price: 12554,
+      totalPrice: 12554,
       paid: 4556,
     },
     {
@@ -44,21 +44,22 @@ const ShoppingHistory = () => {
       name: "pro",
       installemt_total: 4,
       installment_paid: 2,
-      product_price: 12554,
+      totalPrice: 12554,
       paid: 4556,
     },
   ]
 
   const columns = [
+    { field: 'id', headerName: 'Invoice ID', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     {
-      field: 'image', headerName: 'Product Image', flex: 1, width: 130, headerAlign: "center", align: 'center',
-      renderCell: ({ row: { image } }) => (
-        <Avatar src={image} variant="square" sx={{ bgcolor: "#3B3B3B", borderRadius:0.2 }} />
+      field: 'products', headerName: 'Product Details', flex: 1, width: 130, headerAlign: "center", align: 'center',
+      renderCell: (params) => (
+        <IconButton onClick={() => handleDelete(params.row)} size='small' sx={{ ".MuiSvgIcon-root": { color: "FF8B03 !important" }, bgcolor: "#3B3B3B !important" }}>
+          <FeedOutlined fontSize='small' sx={{ ".MuiSvgIcon-root": { color: "FF8B03 !important" } }} />
+        </IconButton>
       )
     },
-    { field: 'id', headerName: 'Invoice ID', flex: 1, width: 130, headerAlign: "center", align: 'center' },
-    { field: 'name', headerName: 'Product Name', flex: 1, width: 130, headerAlign: "center", align: 'center' },
-    { field: 'product_price', headerName: 'Product Price', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'totalPrice', headerName: 'Total Price', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     { field: 'paid', headerName: 'Paid Amount', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     {
       field: 'installemt', headerName: 'Installemt', flex: 1, width: 130, headerAlign: "center", align: 'center',
