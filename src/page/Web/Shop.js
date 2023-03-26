@@ -1,9 +1,8 @@
-import { Autocomplete, Box, Button, IconButton, Paper, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { FilterAlt, Search, Login } from '@mui/icons-material';
-import ProductCard from "../../Components/ProductCard"
+import { Login, Search } from '@mui/icons-material';
+import { Autocomplete, Box, Button, Paper, TextField, Typography } from '@mui/material';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import ProductCard from "../../Components/ProductCard";
 const Shop = () => {
 
   const navigate = useNavigate()
@@ -101,21 +100,14 @@ const Shop = () => {
     },
   ]
 
-
-
-  const filterRender = [
-    { list: categoryList, placeholder: "Category", name: "category" },
-    { list: categoryList, placeholder: "Loan Type", name: "loantype" },
-  ]
-
   return (
+
     <Box p={2}>
 
       <Box width="100%" height={100} display="flex" flexDirection="column" alignContent="center" justifyContent="center">
         <Typography textAlign="center" fontSize={40} fontWeight={700} sx={{ color: "primary.main" }}>Bubmble Bee</Typography>
         <Typography textAlign="center" fontSize={16} fontWeight={600}>Buy Now, Pay Later</Typography>
       </Box>
-
 
       <Box display="flex" justifyContent="center" mt={2}>
         <Autocomplete
@@ -145,8 +137,8 @@ const Shop = () => {
           )}
         />
 
-        <Box position="absolute"  sx={{ transform: "translate(38vw,0)" }}>
-          <Button variant='contained' onClick={ () => navigate("login") }  >
+        <Box position="absolute" sx={{ transform: "translate(38vw,0)" }}>
+          <Button variant='contained' onClick={() => navigate("login")}  >
             <Typography fontSize={15} fontWeight={600} color="white"> Login  </Typography>
             <Login fontSize='medium' sx={{ color: "white" }} />
           </Button>
@@ -154,63 +146,17 @@ const Shop = () => {
 
       </Box>
 
-
-      <Box display="flex" mt={2}>
-
-        {/* Fitler */}
-        <Box height={510} bgcolor="#3B3B3B" borderRadius={5} display="flex" flexDirection="column" p={2} alignItems="center">
-          <Box display="flex" >
-            <Typography mb={2} fontSize={16} fontWeight={600} color="primary.main"> Filters  </Typography>
-            <FilterAlt fontSize='small' sx={{ color: "primary.main" }} />
-          </Box>
-          {filterRender.map((e, i) => {
-            return (
-              <Autocomplete
-                size='small'
-                key={i}
-                options={e.list}
-                freeSolo
-                // onChange={(e, value) => formik.values[data.value] = value.value}
-                getOptionLabel={option => option.name}
-                PaperComponent={params => <Paper {...params} sx={{ ...paperStyle }} />}
-                sx={{ minWidth: 240, width: "25%", ".MuiOutlinedInput-root": { bgcolor: "white", borderRadius: "100px !important", mb: 1 } }}
-                renderInput={(params) => (
-                  < TextField
-                    {...params}
-                    name={e.name}
-                    placeholder={e.placeholder}
-                    inputProps={{ ...params.inputProps, readOnly: true }}
-                    // error={formik.touched[data.value] && Boolean(formik.errors[data.value])}
-                    // onBlur={formik.handleBlur}
-                    sx={{
-                      ".MuiOutlinedInput-root": {
-                        bgcolor: "#2E2E2E",
-                        color: "white"
-                      }
-                    }}
-                  />
-                )}
-              />
-            )
-          })}
-
-        </Box>
-
-        {/*  Products */}
-        <Box width="80%" height={510} display="flex" alignItems="center" flexDirection="column" >
-
-          <Box display="flex" flexWrap="wrap" justifyContent="flex-start" ml={5} overflow="auto" mt={1}>
-            {ProductList.map((c, i) => {
-              return <ProductCard key={i} data={c} />
-            })}
-          </Box>
-        </Box>
-
+      <Box display="flex" flexWrap="wrap" height={510} mt={3} mx="6vw" >
+        {ProductList.map((c, i) => {
+          return <ProductCard key={i} data={c} />
+        })}
       </Box>
+
 
       {/* Footer */}
       <Typography textAlign="center" mx="auto" mt={2} fontSize={14} fontWeight={500} color="primary.main"> 2023 Bubmble Bee All Rights Reserved  </Typography>
     </Box>
+
   )
 }
 
