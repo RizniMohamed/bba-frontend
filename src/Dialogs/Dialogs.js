@@ -4,6 +4,7 @@ import Loan from './Loan'
 import Message from './Message'
 import OTP from './OTP'
 import Product from './Product'
+import Shop from './Shop'
 import Signup from './Signup'
 
 const Dialogs = () => {
@@ -15,6 +16,7 @@ const Dialogs = () => {
       <OTP/>
       <Loan/>
       <Product/>
+      <Shop/>
     </>
   )
 }

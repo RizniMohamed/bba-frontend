@@ -1,13 +1,17 @@
 import {
-  Dashboard, Badge,ExitToApp,Paid,Inventory
+  Dashboard, Badge,ExitToApp,Paid,Inventory, AccountBalance
 } from '@mui/icons-material';
-
 
 const data = [
   {
     name: "Dashboard",
     path: "/w/dashboard",
     icon: <Dashboard />
+  },
+  {
+    name: "Shop",
+    path: "/w/shop",
+    icon: <AccountBalance />
   },
   {
     name: "Customer",

@@ -5,14 +5,14 @@ import { messageActions } from '../Store/messageSlice'
 
 const Message = () => {
 
-    const {msg,status, variant} = useSelector(state => state.message)
+    const { msg, status, variant } = useSelector(state => state.message)
     const dispatch = useDispatch()
 
     return (
 
         <Snackbar
             key={msg}
-            TransitionComponent={props => <Slide  {...props} direction="up" />}
+            TransitionComponent={props => <Slide  {...props} direction="right" />}
             open={status}
             sx={{ minWidth: 300 }}
             autoHideDuration={1500}
@@ -22,9 +22,9 @@ const Message = () => {
                     touchEvent: false
                 }
             }
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            // anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             onClose={() => dispatch(messageActions.hide())} >
-            <Alert variant='filled' severity={variant ? variant : "success"} sx={{ width: '100%'}}>
+            <Alert variant='filled' severity={variant ? variant : "success"} sx={{ width: '100%', borderRadius: 0.2 }}>
                 {msg}
             </Alert>
         </Snackbar >

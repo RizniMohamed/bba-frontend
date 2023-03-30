@@ -12,8 +12,8 @@ const Delete = () => {
   const { status, onSubmit, data } = useSelector(state => state.dialog.delete)
   const dispatch = useDispatch()
 
-  const handleOnClick = ({ innerText }) => {
-    if (innerText === "Delete") onSubmit()
+  const handleOnClick = () => {
+    onSubmit()
     dispatch(dialogActions.hide('delete'))
   }
 

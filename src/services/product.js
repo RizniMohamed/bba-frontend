@@ -19,6 +19,15 @@ export const getProductsByShop = async (shopID) => {
     }
 }
 
+export const getAllProducts = async () => {
+    try {
+        const response = await API.get(`product`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
 export const deleteProduct = async (ProductID) => {
     try {
         const response = await API.delete(`product/${ProductID}`)
@@ -36,3 +45,4 @@ export const upadateProduct = async (ProductID, data) => {
         throw error
     }
 }
+

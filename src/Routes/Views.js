@@ -17,8 +17,9 @@ import WSeller from '../page/Web/Seller';
 import WInventory from '../page/Web/Inventory';
 import WProfile from '../page/Web/Profile';
 import WLoan from '../page/Web/Loan';
-import WShop from '../page/Web/Shop'
+import WHome from '../page/Web/Home'
 import WLogin from '../page/Web/Login';
+import WShop from '../page/Web/Shop';
 import WShoppingHistory from '../page/Web/ShoppingHistory';
 
 import Index from '../page/Index'
@@ -52,7 +53,7 @@ function Views() {
       <Route index element={<Index />} />
 
       <Route path="w">
-        <Route index element={<WShop />} />
+        <Route index element={<WHome />} />
         <Route path="login" element={<WLogin />} />
         <Route element={<Protected isSignedIn={authSate} />}>
 
@@ -78,6 +79,7 @@ function Views() {
           </Route>
           <Route path="loan" element={<WLoan />} />
           <Route path="inventory" element={<WInventory />} />
+          <Route path="shop" element={<WShop />} />
 
         </Route>
       </Route>

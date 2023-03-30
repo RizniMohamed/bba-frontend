@@ -8,3 +8,21 @@ export const getShopBySeller = async (userID) => {
         throw error
     }
 }
+
+export const upadateShop = async (shopID, data) => {
+    try {
+        const response = await API.put(`shop/${shopID}`, data)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+export const deleteShop = async (shopID) => {
+    try {
+        const response = await API.delete(`shop/${shopID}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}

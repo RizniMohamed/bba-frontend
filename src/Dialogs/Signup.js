@@ -96,10 +96,8 @@ const Signup = () => {
 
   const onSubmit = async (inputData) => {
     setLoading(true)
-    console.log(inputData)
     inputData['roleID'] = 2 // seller
     const { data, status } = await signup(inputData)
-    console.log(data);
     if (status !== 200) {
       setLoading(false)
       dispatch(messageActions.show([data, "error"]))

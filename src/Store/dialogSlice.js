@@ -26,6 +26,11 @@ const initialState = {
         data: "",
         onSubmit: undefined
     },
+    shop: {
+        status: false,
+        data: "",
+        onSubmit: undefined
+    },
 }
 const DialogSlice = createSlice({
     name: "Dialog Slice",
