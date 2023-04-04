@@ -51,13 +51,8 @@ const Product = () => {
 
     const create = async (inVals) => {
         setLoading(true)
-        const { data: shopData, status: shopStatus } = await getShopBySeller(auth.userID)
-        if (shopStatus !== 200) {
-            dispatch(messageActions.show([shopData, "error"]))
-            setLoading(false)
-            return
-        }
-        inVals['shopID'] = shopData.id
+   
+        inVals['shopID'] = auth.shopID
         const { data, status } = await createProduct(inVals);
         if (status !== 200) {
             dispatch(messageActions.show([data, "error"]))

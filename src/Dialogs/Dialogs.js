@@ -6,17 +6,21 @@ import OTP from './OTP'
 import Product from './Product'
 import Shop from './Shop'
 import Signup from './Signup'
+import Profile from './Profile'
+import ChangePassword from './ChangePassword'
 
 const Dialogs = () => {
   return (
     <>
       <Delete />
       <Message />
-      <Signup/>
-      <OTP/>
-      <Loan/>
-      <Product/>
-      <Shop/>
+      <Signup />
+      <OTP />
+      <Loan />
+      <Product />
+      <Shop />
+      <Profile />
+      <ChangePassword />
     </>
   )
 }

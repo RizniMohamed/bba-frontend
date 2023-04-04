@@ -8,12 +8,14 @@ import { dialogActions } from '../../Store/dialogSlice';
 import { messageActions } from '../../Store/messageSlice';
 import { createLoan, deleteLoan, getLoanByShop, upadateLoan } from '../../Services/loan';
 import { getShopBySeller } from '../../Services/shop';
+import { useParams } from 'react-router-dom';
 
 const Loan = () => {
 
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
   const [loans, SetLoans] = useState([])
+  const params = useParams()
 
   const columns = [
     { field: 'id', headerName: 'ID', flex: 1, width: 130, headerAlign: "center", align: 'center' },
@@ -99,12 +101,8 @@ const Loan = () => {
   }
 
   const loadData = async () => {
-    const { data: shopData, status: shopStatus } = await getShopBySeller(auth.userID)
-    if (shopStatus !== 200) {
-      dispatch(messageActions.show([shopData, "error"]))
-      return
-    }
-    const { data, status } = await getLoanByShop(shopData.id);
+    const { shopID } = params
+    const { data, status } = await getLoanByShop(shopID || auth.shopID);
     if (status === 200) SetLoans(data)
   }
 

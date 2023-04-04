@@ -8,12 +8,13 @@ import { dialogActions } from '../../Store/dialogSlice';
 import { messageActions } from '../../Store/messageSlice';
 import { createProduct, deleteProduct, getProductsByShop } from '../../Services/product';
 import { getShopBySeller } from '../../Services/shop';
+import { useParams } from 'react-router-dom';
 
 const Inventory = () => {
 
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
-
+  const params = useParams()
 
   const [products, setProducts] = useState([])
 
@@ -70,12 +71,8 @@ const Inventory = () => {
   const handleEdit = row => dispatch(dialogActions.show(["product", loadData, row]))
 
   const loadData = async () => {
-    const { data: shopData, status: shopStatus } = await getShopBySeller(auth.userID)
-    if (shopStatus !== 200) {
-      dispatch(messageActions.show([shopData, "error"]))
-      return
-    }
-    const { data, status } = await getProductsByShop(shopData.id);
+    const { shopID } = params
+    const { data, status } = await getProductsByShop(shopID || auth.shopID);
     if (status === 200) setProducts(data)
   }
 

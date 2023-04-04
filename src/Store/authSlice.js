@@ -13,12 +13,14 @@ const authSlice = createSlice({
             state.username = payload.payload?.username
             state.role = payload.payload?.role
             state.userID = payload.payload?.userID
+            state.shopID = payload.payload?.shopID
         },
         logout: (state, payload) => {
             state.status = false
             state.username = undefined
             state.role = undefined
             state.userID = undefined
+            state.shopID = undefined
         },
     }
 })

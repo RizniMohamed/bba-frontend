@@ -9,6 +9,16 @@ export const getShopBySeller = async (userID) => {
     }
 }
 
+
+export const getShops = async () => {
+    try {
+        const response = await API.get(`shop`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
 export const upadateShop = async (shopID, data) => {
     try {
         const response = await API.put(`shop/${shopID}`, data)

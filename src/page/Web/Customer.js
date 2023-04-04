@@ -1,94 +1,70 @@
 import { Delete, ShoppingBag } from '@mui/icons-material';
 import { Avatar, Box, IconButton } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import BreadCrumbs from '../../Components/BreadCrumbs';
 import { dialogActions } from '../../Store/dialogSlice';
+import { messageActions } from '../../Store/messageSlice';
+import { getInvoiceByShop } from '../../Services/invoice';
 
 const Profile = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const auth = useSelector(state => state.auth)
+  const [data, setData] = useState([])
 
-  const loanDetails = [
-    {
-      image: "",
-      id: 1,
-      name: "default",
-      email: "mnriznimohamed@gmail.com",
-      age: 0,
-      contact: 15000,
-    },
-    {
-      image: "",
-      id: 2,
-      name: "basic",
-      email: "mnriznimohamed@gmail.com",
-      age: 15000,
-      contact: 25000,
-    },
-    {
-      image: "",
-      id: 3,
-      name: "medium",
-      email: "mnriznimohamed@gmail.com",
-      age: 25000,
-      contact: 50000,
-    },
-    {
-      image: "",
-      id: 4,
-      name: "pro",
-      email: "mnriznimohamed@gmail.com",
-      age: 50000,
-      contact: 100000,
-    },
-  ]
+
+  const loadData = async () => {
+    let { data: shopData,status } = await getInvoiceByShop(auth.shopID)
+    if (status !== 200) {
+      dispatch(messageActions.show([data, "error"]))
+      return
+    }
+    console.log('shopData', shopData)
+
+    shopData = shopData.map( c => {
+      return {
+        id: c.person.id,
+        image: c.person.image,
+        name: c.person.name,
+        age: c.person.dob,
+        email: c.person.email,
+        contact: c.person.contact,
+      }
+    })
+
+
+    // filter list of objects by object key 
+
+
+    
+    setData(shopData)
+  }
+  console.log('data', data)
+
+  useEffect(() => { loadData() }, [])
 
   const columns = [
     {
-      field: 'iamge', headerName: 'Image', flex: 1, width: 130, headerAlign: "center", align: 'center',
-      renderCell: ({ row: { image } }) => (
-        <>
-          <Avatar src={image} variant="rounded" sx={{ bgcolor: "#3B3B3B" }} />
-        </>
-      )
+      field: 'image', headerName: 'Image', flex: 1, width: 130, headerAlign: "center", align: 'center',
+      renderCell: ({ row: { image } }) =>  <Avatar src={image} variant="rounded" sx={{ bgcolor: "#3B3B3B" }} />
     },
-    { field: 'id', headerName: 'ID', flex: 1, width: 130, headerAlign: "center", align: 'center' },
-    { field: 'name', headerName: 'Name', flex: 1, width: 130, headerAlign: "center", align: 'center' },
-    { field: 'email', headerName: 'Email', flex: 1, width: 130, headerAlign: "center", align: 'center' },
-    { field: 'age', headerName: 'Age', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'id', headerName: 'ID', flex: 1, width: 100, headerAlign: "center", align: 'center' },
+    { field: 'name', headerName: 'Name', flex: 1, width: 160, headerAlign: "center", align: 'center' },
+    { field: 'email', headerName: 'Email', flex: 1, width: 160, headerAlign: "center", align: 'center' },
+    { field: 'age', headerName: 'Age', flex: 1, width: 100, headerAlign: "center", align: 'center' },
     { field: 'contact', headerName: 'Contact', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     {
       field: 'shopHistroy', headerName: 'Shopping Histroy', flex: 1, width: 130, headerAlign: "center", align: 'center',
-      renderCell: (params) => (
-        <IconButton size='small' sx={{ color: "#FF8B03", bgcolor: "#3B3B3B !important" }} onClick={() => navigate("shopping history")} >
+      renderCell: (row) => (
+        <IconButton size='small' sx={{ color: "#FF8B03", bgcolor: "#3B3B3B !important" }} onClick={() => navigate(`${row.id}/shopping history`)} >
           <ShoppingBag fontSize='small' sx={{ color: "#FF8B03 !important" }} />
         </IconButton>
       )
-    },
-    {
-      field: 'delete', headerName: 'Delete', flex: 1, width: 130, headerAlign: "center", align: 'center',
-      renderCell: (params) => (
-        <IconButton onClick={() => handleDelete(params.row)} size='small' sx={{ color: "red", bgcolor: "#3B3B3B !important" }}>
-          <Delete fontSize='small' sx={{ color: "red !important" }} />
-        </IconButton>
-      )
-    },
+    }
   ];
-
-  const handleDelete = row => {
-    dispatch(dialogActions.show([
-      "delete",
-      (formData) => {
-        alert("Deleted " + row.id)
-      },
-      "Are you sure do you want to delete this customer? All purchaes assoicated with this customer will also deleted"
-    ]))
-    console.log(row);
-  }
-
 
 
   return (
@@ -97,7 +73,7 @@ const Profile = () => {
 
       <Box mt={2}>
         <DataGrid
-          rows={loanDetails}
+          rows={data}
           columns={columns}
           autoHeight={true}
           hideFooter={true}

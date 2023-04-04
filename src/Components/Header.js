@@ -5,6 +5,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { drawerActions } from '../Store/drawerSlice';
+import { getPersonByID } from '../Services/person'
+import { messageActions } from '../Store/messageSlice'
+
 import logo from '../LocalData/image/logo.png';
 const Header = () => {
 
@@ -13,6 +16,9 @@ const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [profileStyle, setProfileStyle] = useState({ color: "white" })
+  const [profile, setProfile] = useState()
+  const auth = useSelector(state => state.auth)
+
 
   const handleDrawerState = () => drawerState ? dispatch(drawerActions.hide()) : dispatch(drawerActions.show())
   const handleProfile = () => navigate('profile')
@@ -24,7 +30,16 @@ const Header = () => {
     setProfileStyle(pathArrays[1]?.toLowerCase() === "profile" ? selectedStyle : unSelectedStyle)
   }, [location])
 
+  const loadData = async () => {
+    const { data: profileData, status: profileStatus } = await getPersonByID(auth.userID)
+    if (profileStatus !== 200) {
+      dispatch(messageActions.show([profileData, "error"]))
+      return
+    }
+    setProfile(profileData)
+  }
 
+  useEffect(() => { loadData() }, [])
 
   return (
     <>
@@ -44,13 +59,19 @@ const Header = () => {
             <Typography fontSize={20} color="white" fontFamily="serif" fontWeight={600}>Bumble Bee</Typography>
           </Box>
 
-          {<IconButton
-            onClick={handleProfile}
-            edge="start"
-            sx={profileStyle}
-          >
-            <AccountCircle />
+          {<IconButton onClick={handleProfile} edge="start" sx={profileStyle}>
+            {profile?.image ? (
+              <img src={profile.image} alt="Profile"
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  borderRadius: "50%",
+                }} />
+            ) : (
+              <AccountCircle />
+            )}
           </IconButton>}
+
         </Toolbar>
       </AppBar>
     </>

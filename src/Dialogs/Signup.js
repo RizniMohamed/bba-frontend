@@ -9,11 +9,12 @@ import PopoverRole from './PopoverRole';
 import { ArrowBackIosRounded, ArrowForwardIosRounded } from '@mui/icons-material';
 import { signup } from '../Services/user';
 import { messageActions } from '../Store/messageSlice';
+import differenceInYears from "date-fns/differenceInYears";
 
 const initVals = {
   name: "",
   email: "",
-  age: "",
+  dob: "",
   contact: "",
   address: "",
   password: "",
@@ -27,13 +28,13 @@ const initVals = {
 
 const Schema = yup.object().shape({
   name: yup.string().required("Required*"),
-  email: yup.string().required("Required*").email("Email must be in valid format"),
+  email: yup.string().required("Required*").email(),
   shopName: yup.string().required("Required*"),
   address: yup.string().required("Required*"),
   shopAddress: yup.string().required("Required*"),
   shopImage: yup.mixed().required("Required*"),
   image: yup.mixed().required("Required*"),
-  age: yup.number().required("Required*"),
+  dob: yup.date().test("dob", "Should be greater than 18", value => differenceInYears(new Date(), new Date(value)) >= 18).required("Required*"),
   contact: yup.string().required("Required*").test("len", "Invalid Phone number", (val) => {
     if ((val?.length === 9)) return true
   }),
@@ -46,9 +47,9 @@ const renderUserData = [
   { name: "Full Name", value: "name", placeholder: "Full Name" },
   { name: "Email", value: "email", placeholder: "Email", options: { type: "email" } },
   { name: "Contact", value: "contact", placeholder: "7X XX XX XXX", options: { type: "number" } },
-  { name: "Age", value: "age", placeholder: "Age", options: { type: "number" } },
+  { name: "Date of Birth", value: "dob", placeholder: "Date of Birth", options: { type: "date" }, helper: "Age need be above 18" },
   { name: "Address", value: "address", placeholder: "Address" },
-  { name: "Password", value: "password", placeholder: "Password", options: { type: "password" } },
+  { name: "Password", value: "password", placeholder: "Password", options: { type: "password" }, helper: "Required: One capital letter (A-Z) | One small letter (a-z) | One number (0-9) | 8 in length " },
   { name: "Confrim Password", value: "confirmPassword", placeholder: "Confirm Password", options: { type: "password" } },
 ]
 
@@ -63,13 +64,17 @@ const Signup = () => {
 
   const [shopImage, setShopImage] = useState("")
   const [image, setimage] = useState("")
-  const [helpRoleAnchor, setHelpRoleAnchor] = useState(null);
+  const [helpAnchor, setHelpAnchor] = useState(null);
+  const [helpElement, setHelpElement] = useState(null);
   const [loading, setLoading] = useState(false)
 
   const [section, setSection] = useState(1)
   const sectionMax = 2
 
-  const handleHelpRole = (event) => setHelpRoleAnchor(event.currentTarget);
+  const handleHelpRole = (event,value) => {
+    setHelpAnchor(event.currentTarget)
+    setHelpElement(value)
+  };
 
   const handleShopImageChange = (e) => {
     const reader = new FileReader();
@@ -159,15 +164,13 @@ const Signup = () => {
               {renderUserData.map((data, i) => {
                 return (
                   <Box key={i} mb={1} width={"100%"} >
-                    {data.name === "Password" ?
+                    {data.helper ?
                       <Box display="flex">
                         <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >{data.name}</Typography>
-                        <IconButton sx={{ p: 0, m: 0, ml: 0.5, mb: 0.5 }} onClick={handleHelpRole}>
+                        <IconButton sx={{ p: 0, m: 0, ml: 0.5, mb: 0.5 }} onClick={(e) => handleHelpRole(e, data.value)}>
                           <HelpIcon fontSize='small' sx={{ color: "primary.main" }} />
                         </IconButton>
-                        <PopoverRole anchor={helpRoleAnchor} setAnchor={setHelpRoleAnchor} text={
-                          "Required: One capital letter (A-Z) | One small letter (a-z) | One number (0-9) | 8 in length "
-                        } />
+                        {data.value === helpElement && <PopoverRole anchor={helpAnchor} setAnchor={setHelpAnchor} text={data.helper} />}
                       </Box> : <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >{data.name}</Typography>
                     }
 
@@ -223,7 +226,7 @@ const Signup = () => {
                         <IconButton sx={{ p: 0, m: 0, ml: 0.5, mb: 0.5 }} onClick={handleHelpRole}>
                           <HelpIcon fontSize='small' sx={{ color: "primary.main" }} />
                         </IconButton>
-                        <PopoverRole anchor={helpRoleAnchor} setAnchor={setHelpRoleAnchor} text={
+                        <PopoverRole anchor={helpAnchor} setAnchor={setHelpAnchor} text={
                           "Required: One capital letter (A-Z) | One small letter (a-z) | One number (0-9) | 8 in length "
                         } />
                       </Box> : <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >{data.name}</Typography>

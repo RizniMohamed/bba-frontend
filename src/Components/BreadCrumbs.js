@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 
 const BreadCrumbs = () => {
     const location = useLocation()
-    const paths = location.pathname.split("/").filter(x => x).slice(1)
+    const paths = location.pathname.split("/").filter(x => x).slice(1).filter(x => !Number.parseInt(x))
 
 
     const hoverStyle = {

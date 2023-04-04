@@ -52,6 +52,7 @@ const Login = () => {
       role: data.role.name,
       userID: data.id,
       email: data.email,
+      shopID: data.shop?.id,
     }
     dispatch(authActions.login(authData))
     setLoading(false)
