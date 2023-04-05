@@ -1,60 +1,57 @@
-import { Avatar, Box, Button, IconButton, Slider, Typography } from '@mui/material'
-import React from 'react'
-import BreadCrumbs from '../../Components/BreadCrumbs'
+import { Delete, FeedOutlined } from '@mui/icons-material';
+import { Box, IconButton, Slider } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { Add, Delete, Details, Edit, FeedOutlined, Paid, Receipt, ShoppingBag } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import BreadCrumbs from '../../Components/BreadCrumbs';
+import { getInvoiceByUser } from '../../Services/invoice';
 import { dialogActions } from '../../Store/dialogSlice';
-import defaultProduct from '../../LocalData/image/default_product.png'
+import { messageActions } from '../../Store/messageSlice';
 
 const ShoppingHistory = () => {
   const dispatch = useDispatch()
 
-  const ShoppingHistroy = [
-    {
-      image: defaultProduct,
-      id: 1,
-      name: "default",
-      installemt_total: 3,
-      installment_paid: 2,
-      totalPrice: 12554,
-      paid: 4556,
-    },
-    {
-      image: defaultProduct,
-      id: 2,
-      name: "basic",
-      installemt_total: 3,
-      installment_paid: 3,
-      totalPrice: 12554,
-      paid: 4556,
-    },
-    {
-      image: defaultProduct,
-      id: 3,
-      name: "medium",
-      installemt_total: 3,
-      installment_paid: 1,
-      totalPrice: 12554,
-      paid: 4556,
-    },
-    {
-      image: defaultProduct,
-      id: 4,
-      name: "pro",
-      installemt_total: 4,
-      installment_paid: 2,
-      totalPrice: 12554,
-      paid: 4556,
-    },
-  ]
+  const [data, setData] = useState([])
+  const auth = useSelector(state => state.auth)
+  const params = useParams()
+
+  const loadData = async () => {
+    let { data: shopData, status } = await getInvoiceByUser(auth.shopID, params.userID)
+    if (status !== 200) {
+      dispatch(messageActions.show([data, "error"]))
+      return
+    }
+    console.log('invoices', shopData)
+
+    const processedData = shopData.map( i => {
+
+      let total = i.products.map(obj => obj.quantity * obj.price).reduce((acc, val) => acc + val);
+      total = total + ((i.loan.interest/100) * total)
+
+      return {
+        id: i.id,
+        products: i.products,
+        totalPrice: total,
+        paid: i.paidAmount,
+        installemt_total: i.loan.steps,
+        installment_paid: i.paidInstallment,
+
+      }
+    })
+
+    setData(processedData)
+  }
+  console.log('data', data)
+
+  useEffect(() => { loadData() }, [])
 
   const columns = [
     { field: 'id', headerName: 'Invoice ID', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     {
       field: 'products', headerName: 'Product Details', flex: 1, width: 130, headerAlign: "center", align: 'center',
       renderCell: (params) => (
-        <IconButton onClick={() => handleDelete(params.row)} size='small' sx={{ ".MuiSvgIcon-root": { color: "FF8B03 !important" }, bgcolor: "#3B3B3B !important" }}>
+        <IconButton onClick={() => handleProducts(params.row)} size='small' sx={{ ".MuiSvgIcon-root": { color: "FF8B03 !important" }, bgcolor: "#3B3B3B !important" }}>
           <FeedOutlined fontSize='small' sx={{ ".MuiSvgIcon-root": { color: "FF8B03 !important" } }} />
         </IconButton>
       )
@@ -81,30 +78,14 @@ const ShoppingHistory = () => {
         />
       )
     },
-    {
-      field: 'delete', headerName: 'Delete', flex: 1, width: 130, headerAlign: "center", align: 'center',
-      renderCell: (params) => (
-        <IconButton onClick={() => handleDelete(params.row)} size='small' sx={{ color: "red", bgcolor: "#3B3B3B !important" }}>
-          <Delete fontSize='small' sx={{ color: "red !important" }} />
-        </IconButton>
-      )
-    },
+    
   ];
 
 
-
-  const handleDelete = row => {
-    dispatch(dialogActions.show([
-      "delete",
-      (formData) => {
-        alert("Deleted " + row.id)
-      },
-      "Are you sure do you want to delete this invoice? This cannot be undone"
-    ]))
-    console.log(row);
+  const handleProducts = ({ products }) => {
+    dispatch(dialogActions.show(["productDetails", , products]))
+    console.log(products);
   }
-
-
 
   return (
     <Box width="100%" >
@@ -112,7 +93,7 @@ const ShoppingHistory = () => {
 
       <Box mt={2}>
         <DataGrid
-          rows={ShoppingHistroy}
+          rows={data}
           columns={columns}
           autoHeight={true}
           hideFooter={true}

@@ -9,3 +9,14 @@ export const getInvoiceByShop = async (shopID) => {
         throw error
     }
 }
+
+
+
+export const getInvoiceByUser = async (shopID,userID) => {
+    try {
+        const response = await API.get(`invoice/${shopID}/${userID}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}

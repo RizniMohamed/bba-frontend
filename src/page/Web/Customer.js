@@ -15,7 +15,6 @@ const Profile = () => {
   const auth = useSelector(state => state.auth)
   const [data, setData] = useState([])
 
-
   const loadData = async () => {
     let { data: shopData,status } = await getInvoiceByShop(auth.shopID)
     if (status !== 200) {
@@ -24,23 +23,31 @@ const Profile = () => {
     }
     console.log('shopData', shopData)
 
-    shopData = shopData.map( c => {
+    const uniqueIds = {}
+    const processedData = shopData.map((c) => {
+      // Check if ID already exists in uniqueIds object
+      if (uniqueIds[c.person.id]) {
+        return null // Skip this record
+      } else {
+        uniqueIds[c.person.id] = true // Mark ID as seen
+      }
+
+      const dob = new Date(c.person.dob)
+      const ageInMs = Date.now() - dob.getTime()
+      const ageInYears = Math.floor(ageInMs / 31556952000)
       return {
         id: c.person.id,
         image: c.person.image,
         name: c.person.name,
-        age: c.person.dob,
+        age: ageInYears,
         email: c.person.email,
         contact: c.person.contact,
       }
     })
 
+    const filteredData = processedData.filter((record) => record !== null)
 
-    // filter list of objects by object key 
-
-
-    
-    setData(shopData)
+    setData(filteredData)
   }
   console.log('data', data)
 

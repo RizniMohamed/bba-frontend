@@ -14,6 +14,8 @@ const initVals = {
     name: undefined,
     price: undefined,
     quantity: undefined,
+    category: undefined,
+    brand: undefined,
 }
 
 const Product = () => {
@@ -38,20 +40,24 @@ const Product = () => {
     const Schema = yup.object().shape({
         name: yup.string(),
         price: yup.number(),
+        category: yup.string(),
+        brand: yup.string(),
         quantity: yup.number(),
         image: yup.mixed()
     })
 
 
     const renderData = [
-        { name: "name", placeholder: "product Name", defaultValue: data?.name, },
+        { name: "name", placeholder: "Product Name", defaultValue: data?.name, },
+        { name: "category", placeholder: "Category", defaultValue: data?.category, },
+        { name: "brand", placeholder: "Brand", defaultValue: data?.brand, },
         { name: "price", placeholder: "Price LKR", defaultValue: data?.price, options: { type: "number", inputProps: { step: 0.01 } } },
         { name: "quantity", placeholder: "Quantity", defaultValue: data?.quantity, options: { type: "number", } },
     ]
 
     const create = async (inVals) => {
         setLoading(true)
-   
+
         inVals['shopID'] = auth.shopID
         const { data, status } = await createProduct(inVals);
         if (status !== 200) {

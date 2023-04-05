@@ -29,6 +29,8 @@ const Inventory = () => {
     },
     { field: 'id', headerName: 'ID', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     { field: 'name', headerName: 'Name', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'category', headerName: 'Category', flex: 1, width: 130, headerAlign: "center", align: 'center' },
+    { field: 'brand', headerName: 'Brand', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     { field: 'price', headerName: 'Price LKR', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     { field: 'quantity', headerName: 'Quantity', flex: 1, width: 130, headerAlign: "center", align: 'center' },
     {

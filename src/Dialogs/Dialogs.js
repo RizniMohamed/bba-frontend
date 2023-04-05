@@ -8,6 +8,7 @@ import Shop from './Shop'
 import Signup from './Signup'
 import Profile from './Profile'
 import ChangePassword from './ChangePassword'
+import ProductDetails from './ProductDetails'
 
 const Dialogs = () => {
   return (
@@ -21,6 +22,7 @@ const Dialogs = () => {
       <Shop />
       <Profile />
       <ChangePassword />
+      <ProductDetails />
     </>
   )
 }
