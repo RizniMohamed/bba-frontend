@@ -103,7 +103,10 @@ const Loan = () => {
   const loadData = async () => {
     const { shopID } = params
     const { data, status } = await getLoanByShop(shopID || auth.shopID);
-    if (status === 200) SetLoans(data)
+    if (status === 200)
+      SetLoans(data)
+    else
+      SetLoans([])
   }
 
   useEffect(() => { loadData() }, [])

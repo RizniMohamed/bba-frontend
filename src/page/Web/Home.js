@@ -18,7 +18,7 @@ const Home = () => {
   const loadData = async () => {
     setLoading(true)
     const { status, data } = await getAllProducts()
-    if (status !== 0) {
+    if (status === 200) {
       setProducts(data)
       setFilteredProducts(data)
     } else {

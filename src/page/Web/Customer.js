@@ -10,15 +10,14 @@ import { messageActions } from '../../Store/messageSlice';
 import { getInvoiceByShop } from '../../Services/invoice';
 
 const Profile = () => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const auth = useSelector(state => state.auth)
   const [data, setData] = useState([])
 
   const loadData = async () => {
-    let { data: shopData,status } = await getInvoiceByShop(auth.shopID)
+    let { data: shopData, status } = await getInvoiceByShop(auth.shopID)
     if (status !== 200) {
-      dispatch(messageActions.show([data, "error"]))
+      setData([])
       return
     }
     console.log('shopData', shopData)
@@ -56,7 +55,7 @@ const Profile = () => {
   const columns = [
     {
       field: 'image', headerName: 'Image', flex: 1, width: 130, headerAlign: "center", align: 'center',
-      renderCell: ({ row: { image } }) =>  <Avatar src={image} variant="rounded" sx={{ bgcolor: "#3B3B3B" }} />
+      renderCell: ({ row: { image } }) => <Avatar src={image} variant="rounded" sx={{ bgcolor: "#3B3B3B" }} />
     },
     { field: 'id', headerName: 'ID', flex: 1, width: 100, headerAlign: "center", align: 'center' },
     { field: 'name', headerName: 'Name', flex: 1, width: 160, headerAlign: "center", align: 'center' },

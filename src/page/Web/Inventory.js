@@ -75,7 +75,11 @@ const Inventory = () => {
   const loadData = async () => {
     const { shopID } = params
     const { data, status } = await getProductsByShop(shopID || auth.shopID);
-    if (status === 200) setProducts(data)
+    if (status === 200)
+     setProducts(data)
+     else
+      setProducts([])
+
   }
 
   useEffect(() => { loadData() }, [])

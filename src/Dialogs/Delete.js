@@ -34,7 +34,7 @@ const Delete = () => {
           variant='contained'
           size="small"
           sx={{ bgcolor: "secondary.main" }}
-          onClick={e => handleOnClick(e.currentTarget)}>
+          onClick={e => dispatch(dialogActions.hide('delete'))}>
           Cancel
         </Button>
         <Button

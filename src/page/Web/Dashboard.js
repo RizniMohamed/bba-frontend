@@ -10,12 +10,12 @@ import { Animation } from '@devexpress/dx-react-chart';
 import '../../Theme/pieChart.css';
 
 const data = [
-  { region: 'Asia', val: 35 },
-  { region: 'Africa', val: 20 },
-  { region: 'Northern America', val: 15 },
-  { region: 'South America', val: 5 },
-  { region: 'Europe', val: 10 },
-  { region: 'Oceania', val: 5 },
+  { region: 'Magazines', val: 35 },
+  { region: 'Toothpaste', val: 20 },
+  { region: 'Shampoo', val: 15 },
+  { region: 'Water bottles', val: 5 },
+  { region: 'Footwear', val: 10 },
+  { region: 'Bread', val: 5 },
 ];
 
 const Dashboard = () => {
@@ -41,7 +41,7 @@ const Dashboard = () => {
           innerRadius={0.6}
         />
         <Title
-          text="The Population of Continents and Regions"
+          text="The Products by Quantities"
           sx={{ marginBottom: '80px' }}
         />
         <Legend />

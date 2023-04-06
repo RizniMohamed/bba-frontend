@@ -21,6 +21,7 @@ import WHome from '../page/Web/Home'
 import WLogin from '../page/Web/Login';
 import WShop from '../page/Web/Shop';
 import WShoppingHistory from '../page/Web/ShoppingHistory';
+import WMobileAPP from '../page/Web/MobileAPP';
 
 import Index from '../page/Index'
 import NotFound from "../page/NotFound";
@@ -89,6 +90,7 @@ function Views() {
         <Route path="login" element={<MLogin />} />
       </Route>
 
+      <Route path="app" element={<WMobileAPP />} />
       <Route path="*" element={<NotFound />} />
 
     </Routes>

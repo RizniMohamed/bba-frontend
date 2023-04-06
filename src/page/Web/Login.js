@@ -48,6 +48,12 @@ const Login = () => {
       return
     }
 
+    if (data.role.name === "buyer") {
+      navigate(`/app`)
+      return
+    }
+
+
     const authData = {
       role: data.role.name,
       userID: data.id,

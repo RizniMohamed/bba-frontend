@@ -38,13 +38,15 @@ const Product = () => {
     }
 
     const Schema = yup.object().shape({
-        name: yup.string(),
-        price: yup.number(),
-        category: yup.string(),
-        brand: yup.string(),
-        quantity: yup.number(),
-        image: yup.mixed()
+        name: yup.string().required(),
+        price: yup.number().required(),
+        category: yup.string().required(),
+        brand: yup.string().required(),
+        quantity: yup.number().required(),
+        image: yup.mixed().required()
     })
+
+    console.log(data);
 
 
     const renderData = [
@@ -96,6 +98,8 @@ const Product = () => {
         formik.values.price = data?.price
         formik.values.quantity = data?.quantity
         formik.values.image = data?.image
+        formik.values.category = data?.category
+        formik.values.brand = data?.brand
         setImage(data?.image || defaultProduct)
     }, [data])
 

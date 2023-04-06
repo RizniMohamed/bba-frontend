@@ -1,6 +1,6 @@
-import { Avatar, Box, Button, CircularProgress, Dialog, DialogContent, Divider, IconButton, Input, TextField, Typography } from '@mui/material';
+import { Autocomplete, Avatar, Box, Button, CircularProgress, Dialog, DialogContent, Divider, IconButton, Input, MenuItem, Paper, Select, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { dialogActions } from '../Store/dialogSlice';
@@ -20,19 +20,36 @@ const initVals = {
   password: "",
   confirmPassword: "",
   image: "",
+  roleID: "",
 
   shopName: "",
   shopAddress: "",
   shopImage: "",
 }
 
-const Schema = yup.object().shape({
+const SchemaSeller = yup.object().shape({
   name: yup.string().required("Required*"),
   email: yup.string().required("Required*").email(),
   shopName: yup.string().required("Required*"),
   address: yup.string().required("Required*"),
+  roleID: yup.number().required("Required*"),
   shopAddress: yup.string().required("Required*"),
   shopImage: yup.mixed().required("Required*"),
+  image: yup.mixed().required("Required*"),
+  dob: yup.date().test("dob", "Should be greater than 18", value => differenceInYears(new Date(), new Date(value)) >= 18).required("Required*"),
+  contact: yup.string().required("Required*").test("len", "Invalid Phone number", (val) => {
+    if ((val?.length === 9)) return true
+  }),
+  password: yup.string().required("Required*").matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.#?!@$%^&*-]).{8,}$/,
+    "Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character:"),
+  confirmPassword: yup.string().required("Required*").oneOf([yup.ref('password')], 'Password not match.')
+})
+
+const SchemaBuyer = yup.object().shape({
+  name: yup.string().required("Required*"),
+  email: yup.string().required("Required*").email(),
+  address: yup.string().required("Required*"),
+  roleID: yup.number().required("Required*"),
   image: yup.mixed().required("Required*"),
   dob: yup.date().test("dob", "Should be greater than 18", value => differenceInYears(new Date(), new Date(value)) >= 18).required("Required*"),
   contact: yup.string().required("Required*").test("len", "Invalid Phone number", (val) => {
@@ -69,9 +86,10 @@ const Signup = () => {
   const [loading, setLoading] = useState(false)
 
   const [section, setSection] = useState(1)
-  const sectionMax = 2
+  const [sectionMax, setSectionMax] = useState(2)
+  const [roleID, setRoleID] = useState(3)
 
-  const handleHelpRole = (event,value) => {
+  const handleHelpRole = (event, value) => {
     setHelpAnchor(event.currentTarget)
     setHelpElement(value)
   };
@@ -101,7 +119,7 @@ const Signup = () => {
 
   const onSubmit = async (inputData) => {
     setLoading(true)
-    inputData['roleID'] = 2 // seller
+    // inputData['roleID'] = 2 // seller
     const { data, status } = await signup(inputData)
     if (status !== 200) {
       setLoading(false)
@@ -117,8 +135,13 @@ const Signup = () => {
   const formik = useFormik({
     initialValues: initVals,
     onSubmit: onSubmit,
-    validationSchema: Schema,
+    validationSchema: roleID === 3 ? SchemaBuyer : SchemaSeller,
   })
+
+  const roleList = [
+    { name: "Seller", value: 2 },
+    { name: "Buyer", value: 3 },
+  ]
 
   return (
     <Dialog
@@ -189,6 +212,41 @@ const Signup = () => {
                   </Box>
                 )
               })}
+
+              <Typography fontWeight={700} fontSize={14} sx={{ mb: 0.3, ml: 1.5 }} >Role</Typography>
+              <Autocomplete
+                size='small'
+                options={roleList}
+                freeSolo
+                onChange={(e, { value }) => {
+                  if (parseInt(value) === 2)
+                    setSectionMax(2)
+                  else
+                    setSectionMax(1)
+                  setRoleID(value)
+                  formik.values.roleID = value
+                }}
+                getOptionLabel={option => option.name}
+                PaperComponent={params => <Paper {...params} sx={{ ...paperStyle }} />}
+                renderInput={(params) => (
+                  < TextField
+                    {...params}
+                    InputProps={{ ...params.InputProps }}
+                    placeholder="RoleID"
+                    error={formik.touched.roleID && Boolean(formik.errors.roleID)}
+                    onBlur={formik.handleBlur}
+                    sx={{
+                      ".MuiOutlinedInput-root": {
+                        bgcolor: "#3B3B3B",
+                        borderRadius: 10,
+                        color: "white"
+                      }
+                    }}
+                  />
+                )}
+              />
+
+
             </>
           )}
 
@@ -250,14 +308,17 @@ const Signup = () => {
             </>
           )}
 
-          <Box display="flex" justifyContent="space-between" mt={1}>
-            <IconButton onClick={handleBackSection} disabled={section <= 1 ? true : false}>
-              <ArrowBackIosRounded fontSize='medium' sx={{ color: section <= 1 ? "gray" : "primary.main" }} />
-            </IconButton>
-            <IconButton onClick={handleNextSection} disabled={section >= sectionMax ? true : false}>
-              <ArrowForwardIosRounded fontSize='medium' sx={{ color: section >= 2 ? "gray" : "primary.main" }} />
-            </IconButton>
-          </Box>
+
+          {roleID === 2 && (
+            <Box display="flex" justifyContent="space-between" mt={1}>
+              <IconButton onClick={handleBackSection} disabled={section <= 1 ? true : false}>
+                <ArrowBackIosRounded fontSize='medium' sx={{ color: section <= 1 ? "gray" : "primary.main" }} />
+              </IconButton>
+              <IconButton onClick={handleNextSection} disabled={section >= sectionMax ? true : false}>
+                <ArrowForwardIosRounded fontSize='medium' sx={{ color: section >= 2 ? "gray" : "primary.main" }} />
+              </IconButton>
+            </Box>
+          )}
 
           {loading && <CircularProgress sx={{ mx: "auto", width: "100%" }} size={30} />}
 
@@ -288,4 +349,15 @@ const style_txtbox = {
     borderRadius: 10,
     color: "white"
   }
+}
+
+
+const paperStyle = {
+  bgcolor: "background.mainbg",
+  borderRadius: 0.3,
+  mt: 0.5,
+  "li": {
+    color: "white",
+    px: 2
+  },
 }
