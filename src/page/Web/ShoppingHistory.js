@@ -1,4 +1,4 @@
-import { Delete, FeedOutlined } from '@mui/icons-material';
+import { FeedOutlined } from '@mui/icons-material';
 import { Box, IconButton, Slider } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
@@ -17,17 +17,19 @@ const ShoppingHistory = () => {
   const params = useParams()
 
   const loadData = async () => {
-    let { data: shopData, status } = await getInvoiceByUser(auth.shopID, params.userID)
+    const { shopID } = params
+
+    let { data: shopData, status } = await getInvoiceByUser(shopID || auth.shopID, params.userID)
     if (status !== 200) {
       dispatch(messageActions.show([data, "error"]))
       return
     }
     console.log('invoices', shopData)
 
-    const processedData = shopData.map( i => {
+    const processedData = shopData.map(i => {
 
       let total = i.products.map(obj => obj.quantity * obj.price).reduce((acc, val) => acc + val);
-      total = total + ((i.loan.interest/100) * total)
+      total = total + ((i.loan.interest / 100) * total)
 
       return {
         id: i.id,
@@ -78,7 +80,7 @@ const ShoppingHistory = () => {
         />
       )
     },
-    
+
   ];
 
 

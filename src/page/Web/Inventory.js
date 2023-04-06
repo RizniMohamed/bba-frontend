@@ -1,14 +1,13 @@
-import { Avatar, Box, Button, IconButton, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import BreadCrumbs from '../../Components/BreadCrumbs'
-import { DataGrid } from '@mui/x-data-grid';
 import { Add, Delete, Edit } from '@mui/icons-material';
+import { Avatar, Box, Button, IconButton, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import BreadCrumbs from '../../Components/BreadCrumbs';
+import { deleteProduct, getProductsByShop } from '../../Services/product';
 import { dialogActions } from '../../Store/dialogSlice';
 import { messageActions } from '../../Store/messageSlice';
-import { createProduct, deleteProduct, getProductsByShop } from '../../Services/product';
-import { getShopBySeller } from '../../Services/shop';
-import { useParams } from 'react-router-dom';
 
 const Inventory = () => {
 

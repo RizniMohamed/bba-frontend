@@ -1,12 +1,12 @@
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import { Avatar, Box, Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteShop, getShopBySeller, upadateShop } from '../../Services/shop'
-import { messageActions } from '../../Store/messageSlice'
-import { Button, Box, Avatar, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { deleteShop, getShopBySeller } from '../../Services/shop'
+import { authActions } from '../../Store/authSlice'
 import { dialogActions } from '../../Store/dialogSlice'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import { useNavigate } from 'react-router-dom';
-import { authActions } from '../../Store/authSlice';
+import { messageActions } from '../../Store/messageSlice'
 
 const Shop = () => {
 

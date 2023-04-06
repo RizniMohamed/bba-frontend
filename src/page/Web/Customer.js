@@ -1,21 +1,21 @@
-import { Delete, ShoppingBag } from '@mui/icons-material';
+import { ShoppingBag } from '@mui/icons-material';
 import { Avatar, Box, IconButton } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import BreadCrumbs from '../../Components/BreadCrumbs';
-import { dialogActions } from '../../Store/dialogSlice';
-import { messageActions } from '../../Store/messageSlice';
 import { getInvoiceByShop } from '../../Services/invoice';
 
 const Profile = () => {
   const navigate = useNavigate()
   const auth = useSelector(state => state.auth)
   const [data, setData] = useState([])
+  const params = useParams()
 
   const loadData = async () => {
-    let { data: shopData, status } = await getInvoiceByShop(auth.shopID)
+    const { shopID } = params
+    let { data: shopData, status } = await getInvoiceByShop(shopID || auth.shopID)
     if (status !== 200) {
       setData([])
       return

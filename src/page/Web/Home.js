@@ -1,4 +1,4 @@
-import { Clear, Login, Search } from '@mui/icons-material';
+import { Login, Search } from '@mui/icons-material';
 import { Autocomplete, Box, Button, CircularProgress, Paper, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
