@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 import defaultProduct from '../LocalData/image/default_product.png'
 import { createProduct, upadateProduct } from '../Services/product'
-import { getShopBySeller } from '../Services/shop'
 import { dialogActions } from '../Store/dialogSlice'
 import { messageActions } from '../Store/messageSlice'
 
@@ -26,7 +25,6 @@ const Product = () => {
     const [image, setImage] = useState(defaultProduct)
     const [loading, setLoading] = useState(false)
 
-
     const handleAvatarChange = (e) => {
         const reader = new FileReader();
         reader.onload = () => {
@@ -45,9 +43,6 @@ const Product = () => {
         quantity: yup.number().required(),
         image: yup.mixed().required()
     })
-
-    console.log(data);
-
 
     const renderData = [
         { name: "name", placeholder: "Product Name", defaultValue: data?.name, },

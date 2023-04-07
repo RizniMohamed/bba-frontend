@@ -6,8 +6,6 @@ import { useNavigate } from 'react-router-dom';
 const SellerCard = ({ data }) => {
     const navigate = useNavigate()
 
-    console.log(data);
-
     const details = [
         {
             "name": "ID",

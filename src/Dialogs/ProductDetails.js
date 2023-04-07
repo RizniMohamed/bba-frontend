@@ -15,9 +15,8 @@ const ProductDetails = () => {
 
     const loadData = async () => {
 
-        console.log('data======', data)
-
-        var product_data = data.map(c => {
+        if (!data) return
+        var product_data = data?.map(c => {
             var totalCost = c.price * c.quantity
             return {
                 id: c.id,

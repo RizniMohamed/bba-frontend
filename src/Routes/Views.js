@@ -67,7 +67,7 @@ function Views() {
             <Route index element={<WSeller />} />
             <Route path=":shopID/customer">
               <Route index element={<WCustomer />} />
-              <Route path="shopping history" element={<WShoppingHistory />} />
+              <Route path=":userID/shopping history" element={<WShoppingHistory />} />
             </Route>
             <Route path=":shopID/loan" element={<WLoan />} />
             <Route path=":shopID/inventory" element={<WInventory />} />

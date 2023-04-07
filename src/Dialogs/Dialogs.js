@@ -9,6 +9,7 @@ import Signup from './Signup'
 import Profile from './Profile'
 import ChangePassword from './ChangePassword'
 import ProductDetails from './ProductDetails'
+import UpdatePassword from './UpdatePassword'
 
 const Dialogs = () => {
   return (
@@ -23,6 +24,7 @@ const Dialogs = () => {
       <Profile />
       <ChangePassword />
       <ProductDetails />
+      <UpdatePassword/>
     </>
   )
 }
